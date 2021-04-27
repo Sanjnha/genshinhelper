@@ -22,8 +22,9 @@
 - [📐4. 部署](#4-%E9%83%A8%E7%BD%B2)
   - [4.1 Docker](#41-docker)
   - [4.2 Python Package](#42-python-package)
-  - [4.3 Tencent Cloud SFC (Serverless)](#43-tencent-cloud-sfc-serverless)
-  - [4.4 GitHub Actions (Serverless)](#44-github-actions-serverless)
+  - [4.3 Tencent Cloud SCF (Serverless)](#43-tencent-cloud-scf-serverless)
+  - [4.4 Alibaba Cloud FC (Serverless)](#44-alibaba-cloud-fc-serverless)
+  - [4.5 GitHub Actions (Serverless)](#45-github-actions-serverless)
 - [🔔5. 订阅](#5-%E8%AE%A2%E9%98%85)
 - [🧬6. 环境变量](#%F0%9F%A7%AC6-%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F)
 - [🎉7. 致谢](#7-%E8%87%B4%E8%B0%A2)
@@ -119,7 +120,7 @@ docker run -d --name=genshinhelper \
 -e COOKIE_MIHOYOBBS="<COOKIE_MIHOYOBBS>" \
 -e SCKEY="<SCKEY>" \
 --restart always \
-yindan/genshinhelper
+yindan/genshinhelper:latest
 
 # 高级使用
 # 使用 -e CRON_SIGNIN="0 7 * * *" 的形式自定义运行时间，所用时间为北京时间
@@ -128,7 +129,7 @@ docker run -d --name=genshinhelper \
 -e SCKEY="<SCKEY>" \
 -e CRON_SIGNIN="0 7 * * *" \
 --restart always \
-yindan/genshinhelper
+yindan/genshinhelper:latest
 
 # 使用 config.json
 # 假设你的配置文件是 `/etc/genshin/config.json`
@@ -136,9 +137,9 @@ docker run -d --name=genshinhelper \
 -e COOKIE_MIHOYOBBS="<COOKIE_MIHOYOBBS>" \
 -e SCKEY="<SCKEY>" \
 -e CRON_SIGNIN="0 7 * * *" \
--v /etc/genshin:/app/config \
+-v /etc/genshin:/app/genshinhelper/config \
 --restart always \
-yindan/genshinhelper
+yindan/genshinhelper:latest
 
 # 查看日志
 docker logs -f genshinhelper
@@ -152,14 +153,17 @@ pip install genshinhelper
 # 添加相关环境变量后执行
 python genshinhelper
 ```
+
 ### 4.3 Tencent Cloud SCF (Serverless)
 
+> 提示：Cron表达式为 7 位数
+
 - 前往 [releases](https://github.com/agbulletz/genshinhelper/releases) 页面，下载最新的`genshinhelper-xxx-serverless.zip`压缩包
-- 前往 [云函数 SCF 管理控制台](https://console.cloud.tencent.com/scf/) --> `函数服务` --> `新建` --> `自定义创建` --> `基础配置` --> `本地上传zip包` --> `上传` --> `本地上传zip包` --> 选择下载的`genshinhelper-xxx-serverless.zip`压缩包 --> `完成`
+- 前往 [云函数 SCF 管理控制台](https://console.cloud.tencent.com/scf/) -->`函数服务`-->`新建`-->`自定义创建`-->`基础配置`-->`本地上传zip包`-->`上传`-->`本地上传zip包`--> 选择下载的`genshinhelper-xxx-serverless.zip`压缩包-->`完成`
 
 ![2021-4-27 16-37-59.png](https://i.loli.net/2021/04/27/2gHPKxcsqbwhMTN.png)
 
-- 前往`genshinhelper` -->`函数管理`-->`函数配置`-->`编辑`
+- 前往`genshinhelper`-->`函数管理`-->`函数配置`-->`编辑`
 
 ![2021-4-27 17-14-54.png](https://i.loli.net/2021/04/27/5uo7nx3zMBhUbXg.png)
 
@@ -171,9 +175,34 @@ python genshinhelper
 
 ![2021-4-27 16-45-40.png](https://i.loli.net/2021/04/27/9yxvGT73itAHRqC.png)
 
+### 4.4 Alibaba Cloud FC (Serverless)
 
+> 提示：Cron表达式为 6 位数
 
-### 4.4 GitHub Actions (Serverless)
+International: https://www.alibabacloud.com/zh/product/function-compute
+
+中国站: https://cn.aliyun.com/product/fc
+
+- 前往 [releases](https://github.com/agbulletz/genshinhelper/releases) 页面，下载最新的`genshinhelper-xxx-serverless.zip`压缩包
+- 前往 [函数计算 FC 管理控制台](https://fc.console.aliyun.com/fc/) -->`新建函数`-->`事件函数`-->`代码包上传`-->`上传代码`--> 选择下载的`genshinhelper-xxx-serverless.zip`压缩包 --> 按下图进行配置，注意函数入口为`index.main_handler` -->`新建`
+
+![aly1.png](https://i.loli.net/2021/04/27/NyW1EGML4cHgo6Z.png)
+
+- 前往`genshinhelper` -->`概览`-->`修改配置`
+
+![aly2.png](https://i.loli.net/2021/04/27/1x2kbsVjMUXlwRv.png)
+
+- 下拉找到`环境变量`添加环境变量，变量列表可参考[环境变量](#6-环境变量)。
+
+![aly3.png](https://i.loli.net/2021/04/27/e7GTEumrIh5q3Kt.png)
+
+- 前往`genshinhelper`-->`触发器`-->`创建触发器`--> 按下图进行配置：
+
+![aly4.png](https://i.loli.net/2021/04/27/5Oj2acDs3VCture.png)
+
+### 4.5 GitHub Actions (Serverless)
+
+> 提示：Cron表达式为 5 位数
 
 项目地址：https://github.com/agbulletz/genshinhelper
 
