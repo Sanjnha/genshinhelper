@@ -109,12 +109,15 @@ class __BaseCheckin(object):
 
     @_data_handler
     def run(self):
-        today = self._sign_info.get('data', {}).get('today', '1970-01-01')
-        total_sign_day = self._sign_info.get('data', {}).get(
+        sign_info = self._sign_info
+        rewards_info = self._rewards_info
+
+        today = sign_info.get('data', {}).get('today', '1970-01-01')
+        total_sign_day = sign_info.get('data', {}).get(
             'total_sign_day', 0)
-        is_sign = self._sign_info.get('data', {}).get('is_sign')
-        first_bind = self._sign_info.get('data', {}).get('first_bind')
-        awards = self._rewards_info.get('data', {}).get('awards', [])
+        is_sign = sign_info.get('data', {}).get('is_sign')
+        first_bind = sign_info.get('data', {}).get('first_bind')
+        awards = rewards_info.get('data', {}).get('awards', [])
         region_name = self._sign_data.get('region_name', 'Global')
         uid = self._sign_data.get('uid', 123456789)
         hidden_uid = str(uid).replace(str(uid)[3:-3], '***', 1)
