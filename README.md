@@ -9,6 +9,27 @@
 
 </div>
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+## 📖 目录
+
+- [🌀1. 前言](#1-%E5%89%8D%E8%A8%80)
+- [💡2. 特性](#2-%E7%89%B9%E6%80%A7)
+- [🛠3. 配置](#%F0%9F%9B%A03-%E9%85%8D%E7%BD%AE)
+  - [3.1 获取参数](#31-%E8%8E%B7%E5%8F%96%E5%8F%82%E6%95%B0)
+  - [3.2 使用参数](#32-%E4%BD%BF%E7%94%A8%E5%8F%82%E6%95%B0)
+  - [3.3 配置多账号](#33-%E9%85%8D%E7%BD%AE%E5%A4%9A%E8%B4%A6%E5%8F%B7)
+- [📐4. 部署](#4-%E9%83%A8%E7%BD%B2)
+  - [4.1 Docker](#41-docker)
+  - [4.2 Python Package](#42-python-package)
+  - [4.3 Tencent Cloud SFC (Serverless)](#43-tencent-cloud-sfc-serverless)
+  - [4.4 GitHub Actions (Serverless)](#44-github-actions-serverless)
+- [🔔5. 订阅](#5-%E8%AE%A2%E9%98%85)
+- [🧬6. 环境变量](#%F0%9F%A7%AC6-%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F)
+- [🎉7. 致谢](#7-%E8%87%B4%E8%B0%A2)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## 🌀1. 前言
 
 > genshinhelper 可以自动化为你获取原神每日福利
@@ -66,7 +87,7 @@
 
 - 环境变量
 
-直接将你的配置写入环境变量，变量名称列表可参考`环境变量`部分内容。
+直接将你的配置写入环境变量，变量列表可参考[环境变量](#6-环境变量)。
 
 - 配置文件
 
@@ -124,19 +145,127 @@ docker logs -f genshinhelper
 ```
 
 ### 4.2 Python Package
+
 ```
 pip install genshinhelper
 
 # 添加相关环境变量后执行
 python genshinhelper
 ```
-### 4.3 腾讯云 SFC (Serverless)
+### 4.3 Tencent Cloud SCF (Serverless)
 
-暂缺
+- 前往 [releases](https://github.com/agbulletz/genshinhelper/releases) 页面，下载最新的`genshinhelper-xxx-serverless.zip`压缩包
+- 前往 [云函数 SCF 管理控制台](https://console.cloud.tencent.com/scf/) --> `函数服务` --> `新建` --> `自定义创建` --> `基础配置` --> `本地上传zip包` --> `上传` --> `本地上传zip包` --> 选择下载的`genshinhelper-xxx-serverless.zip`压缩包 --> `完成`
+
+![2021-4-27 16-37-59.png](https://i.loli.net/2021/04/27/2gHPKxcsqbwhMTN.png)
+
+- 前往`genshinhelper` -->`函数管理`-->`函数配置`-->`编辑`
+
+![2021-4-27 17-14-54.png](https://i.loli.net/2021/04/27/5uo7nx3zMBhUbXg.png)
+
+- 修改`执行超时时间`为`300`秒，在`环境变量`添加环境变量，变量列表可参考[环境变量](#6-环境变量)。
+
+![2021-4-27 17-16-28.png](https://i.loli.net/2021/04/27/nTrm8GdFVXl9xsI.png)
+
+- 前往`genshinhelper`-->`触发管理`-->`新建触发器`--> 按下图进行配置：
+
+![2021-4-27 16-45-40.png](https://i.loli.net/2021/04/27/9yxvGT73itAHRqC.png)
+
+
 
 ### 4.4 GitHub Actions (Serverless)
 
-暂缺
+项目地址：https://github.com/agbulletz/genshinhelper
+
+- 点击右上角`Fork`将 [agbulletz/genshinhelper](https://github.com/agbulletz/genshinhelper) fork 到自己的账号下
+
+![fork](https://i.loli.net/2020/10/28/qpXowZmIWeEUyrJ.png)
+
+- 转到 fork 仓库，创建genshinhelper/.github/workflows/main.yml`文件
+
+```yaml
+name: "Genshin Impact Helper"
+
+on:
+  schedule:
+    - cron: "0 22 * * *"  # scheduled at 06:00 (UTC+8) everyday
+  workflow_dispatch:
+
+env:
+  TZ: 'Asia/Shanghai'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          # ref: master
+
+      - name: Set up python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Random sleep
+        if: github.event_name == 'schedule'
+        run: sleep $(shuf -i 10-30 -n 1)
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run sign
+        env:
+          COOKIE_MIHOYOBBS: ${{ secrets.COOKIE_MIHOYOBBS }}
+          COOKIE_HOYOLAB: ${{ secrets.COOKIE_HOYOLAB }}
+          COOKIE_WEIBO: ${{ secrets.COOKIE_WEIBO }}
+          WEIBO_INTL_AID: ${{ secrets.WEIBO_INTL_AID }}
+          WEIBO_INTL_S: ${{ secrets.WEIBO_INTL_S }}
+          COOKIE_KA: ${{ secrets.COOKIE_KA }}
+          BARK_KEY: ${{ secrets.BARK_KEY }}
+          BARK_SOUND: ${{ secrets.BARK_SOUND }}
+          COOL_PUSH_SKEY: ${{ secrets.COOL_PUSH_SKEY }}
+          COOL_PUSH_MODE: ${{ secrets.COOL_PUSH_MODE }}
+          CUSTOM_NOTIFIER: ${{ secrets.CUSTOM_NOTIFIER }}
+          DD_BOT_TOKEN: ${{ secrets.DD_BOT_TOKEN }}
+          DD_BOT_SECRET: ${{ secrets.DD_BOT_SECRET }}
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          IGOT_KEY: ${{ secrets.IGOT_KEY }}
+          PUSH_PLUS_TOKEN: ${{ secrets.PUSH_PLUS_TOKEN }}
+          PUSH_PLUS_USER: ${{ secrets.PUSH_PLUS_USER }}
+          SCKEY: ${{ secrets.SCKEY }}
+          SCTKEY: ${{ secrets.SCTKEY }}
+          TG_BOT_API: ${{ secrets.TG_BOT_API }}
+          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+          TG_USER_ID: ${{ secrets.TG_USER_ID }}
+          WW_ID: ${{ secrets.WW_ID }}
+          WW_APP_SECRET: ${{ secrets.WW_APP_SECRET }}
+          WW_APP_USERID: ${{ secrets.WW_APP_USERID }}
+          WW_APP_AGENTID: ${{ secrets.WW_APP_AGENTID }}
+          WW_BOT_KEY: ${{ secrets.WW_BOT_KEY }}
+          
+        run: |
+          python3 genshinhelper
+```
+
+- 回到项目页面，依次点击`Settings`-->`Secrets`-->`New secret`
+
+![new-secret.png](https://i.loli.net/2020/10/28/sxTuBFtRvzSgUaA.png)
+
+- 依次建立 secret，此步骤为添加环境变量，变量列表可参考[环境变量](#6-环境变量)，最后点击Add secret
+
+![add-secret](https://i.loli.net/2020/10/28/sETkVdmrNcCUpgq.png)
+
+- 返回项目主页面，点击上方的`Actions`，再点击左侧的`Genshin Impact Helper`，再点击`Run workflow`
+
+![run](https://i.loli.net/2020/10/28/5ylvgdYf9BDMqAH.png)
+
+Actions 默认为关闭状态，Fork 之后需要手动执行一次，若成功运行其才会激活。
 
 ## 🔔5. 订阅
 
@@ -254,7 +383,7 @@ Custom notifier:
 
 ## 🎉7. 致谢
 
-原项目 [Genshin Impact Helper](https://github.com/y1ndan/genshin-impact-helper) 于2021.04.02被GitHub屏蔽，至今未取得官方回复。感谢所有为该项目贡献代码的大佬们以及使用该项目的小可爱。
+原项目 [y1ndan/genshin-impact-helper](https://github.com/y1ndan/genshin-impact-helper) 于2021.04.02被GitHub屏蔽，至今未取得官方回复。感谢所有为该项目贡献代码的大佬们以及使用该项目的小可爱。
 
 Huge thanks to:
 @PomeloWang
