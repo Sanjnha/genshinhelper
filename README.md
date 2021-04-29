@@ -204,97 +204,7 @@ International: https://www.alibabacloud.com/zh/product/function-compute
 
 > 提示：Cron表达式为 5 位数
 
-项目地址：https://github.com/agbulletz/genshinhelper
-
-- 点击右上角`Fork`将 [agbulletz/genshinhelper](https://github.com/agbulletz/genshinhelper) fork 到自己的账号下
-
-![fork](https://i.loli.net/2020/10/28/qpXowZmIWeEUyrJ.png)
-
-- 转到 fork 仓库，创建genshinhelper/.github/workflows/main.yml`文件
-
-```yaml
-name: "Genshin Impact Helper"
-
-on:
-  schedule:
-    - cron: "0 22 * * *"  # scheduled at 06:00 (UTC+8) everyday
-  workflow_dispatch:
-
-env:
-  TZ: 'Asia/Shanghai'
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout master
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          # ref: master
-
-      - name: Set up python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-
-      - name: Random sleep
-        if: github.event_name == 'schedule'
-        run: sleep $(shuf -i 10-30 -n 1)
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: Run sign
-        env:
-          COOKIE_MIHOYOBBS: ${{ secrets.COOKIE_MIHOYOBBS }}
-          COOKIE_HOYOLAB: ${{ secrets.COOKIE_HOYOLAB }}
-          COOKIE_WEIBO: ${{ secrets.COOKIE_WEIBO }}
-          WEIBO_INTL_AID: ${{ secrets.WEIBO_INTL_AID }}
-          WEIBO_INTL_S: ${{ secrets.WEIBO_INTL_S }}
-          COOKIE_KA: ${{ secrets.COOKIE_KA }}
-          BARK_KEY: ${{ secrets.BARK_KEY }}
-          BARK_SOUND: ${{ secrets.BARK_SOUND }}
-          COOL_PUSH_SKEY: ${{ secrets.COOL_PUSH_SKEY }}
-          COOL_PUSH_MODE: ${{ secrets.COOL_PUSH_MODE }}
-          CUSTOM_NOTIFIER: ${{ secrets.CUSTOM_NOTIFIER }}
-          DD_BOT_TOKEN: ${{ secrets.DD_BOT_TOKEN }}
-          DD_BOT_SECRET: ${{ secrets.DD_BOT_SECRET }}
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-          IGOT_KEY: ${{ secrets.IGOT_KEY }}
-          PUSH_PLUS_TOKEN: ${{ secrets.PUSH_PLUS_TOKEN }}
-          PUSH_PLUS_USER: ${{ secrets.PUSH_PLUS_USER }}
-          SCKEY: ${{ secrets.SCKEY }}
-          SCTKEY: ${{ secrets.SCTKEY }}
-          TG_BOT_API: ${{ secrets.TG_BOT_API }}
-          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
-          TG_USER_ID: ${{ secrets.TG_USER_ID }}
-          WW_ID: ${{ secrets.WW_ID }}
-          WW_APP_SECRET: ${{ secrets.WW_APP_SECRET }}
-          WW_APP_USERID: ${{ secrets.WW_APP_USERID }}
-          WW_APP_AGENTID: ${{ secrets.WW_APP_AGENTID }}
-          WW_BOT_KEY: ${{ secrets.WW_BOT_KEY }}
-          
-        run: |
-          python3 genshinhelper
-```
-
-- 回到项目页面，依次点击`Settings`-->`Secrets`-->`New secret`
-
-![new-secret.png](https://i.loli.net/2020/10/28/sxTuBFtRvzSgUaA.png)
-
-- 依次建立 secret，此步骤为添加环境变量，变量列表可参考[环境变量](#6-环境变量)，最后点击Add secret
-
-![add-secret](https://i.loli.net/2020/10/28/sETkVdmrNcCUpgq.png)
-
-- 返回项目主页面，点击上方的`Actions`，再点击左侧的`Genshin Impact Helper`，再点击`Run workflow`
-
-![run](https://i.loli.net/2020/10/28/5ylvgdYf9BDMqAH.png)
-
-Actions 默认为关闭状态，Fork 之后需要手动执行一次，若成功运行其才会激活。
+**由于此方式可能会违反 GitHub 使用条款，导致账号被封禁，故不再提供。如坚持使用，请自行探索并承担相应风险。**
 
 ## 🔔5. 订阅
 
@@ -412,7 +322,7 @@ Custom notifier:
 
 ## 🎉7. 致谢
 
-原项目 [y1ndan/genshin-impact-helper](https://github.com/y1ndan/genshin-impact-helper) 于2021.04.02被GitHub屏蔽，至今未取得官方回复。感谢所有为该项目贡献代码的大佬们以及使用该项目的小可爱。
+原项目 [y1ndan/genshin-impact-helper](https://github.com/y1ndan/genshin-impact-helper) 于2021.04.02被GitHub屏蔽。感谢所有为该项目贡献代码的大佬们以及使用该项目的小可爱。
 
 Huge thanks to:
 @PomeloWang
