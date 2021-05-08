@@ -1,292 +1,222 @@
-简体中文 | [English](./README.en-US.md)
+English | [简体中文](https://www.yindan.me/tutorial/genshin-impact-helper.html)
 
 <div align="center"> 
 <h1>genshinhelper</h1>
 <p>Automatically get Genshin Impact daily check-in rewards.</p>
-<p><a href="https://qm.qq.com/cgi-bin/qm/qr?k=_M9lYFxkYD7yQQR2btyG3pkZWFys_I-l&authKey=evGDzE2eFVBm46jsHpgcWrokveg70Z9GKl3H45o0oJuia620UGeO27lDPG9gKb/2&noverify=0">QQ Group</a> | <a href="https://discord.gg/p28845gGfv">Discord</a> | <a href="https://t.me/genshinhelper">Telegram</a></p>
 
-![Genshin Impact Helper](https://i.loli.net/2020/11/18/3zogEraBFtOm5nI.jpg)
+[![GitHub stars](https://img.shields.io/github/stars/y1ndan/genshinhelper?style=flat-square)](https://github.com/y1ndan/genshinhelper/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/y1ndan/genshinhelper?style=flat-square)](https://github.com/y1ndan/genshinhelper/network)
+[![GitHub issues](https://img.shields.io/github/issues/y1ndan/genshinhelper?style=flat-square)](https://github.com/y1ndan/genshinhelper/issues)
+[![Docker stars](https://img.shields.io/docker/stars/yindan/genshinhelper?style=flat-square)](https://registry.hub.docker.com/r/yindan/genshinhelper)
+![Docker pulls](https://img.shields.io/docker/pulls/yindan/genshinhelper?style=flat-square)
+[![PyPI version](https://img.shields.io/pypi/v/genshinhelper?style=flat-square)](https://pypi.org/project/genshinhelper/#history)
+[![PyPI downloads](https://img.shields.io/pypi/dm/genshinhelper?style=flat-square)](https://pypi.org/project/genshinhelper)
+[![QQ Group](https://img.shields.io/badge/chat-130516740-0d86d7?style=flat-square)](https://qm.qq.com/cgi-bin/qm/qr?k=_M9lYFxkYD7yQQR2btyG3pkZWFys_I-l)
+[![Discord](https://img.shields.io/badge/chat-discord-0d86d7?style=flat-square)](https://discord.gg/p28845gGfv)
+[![Telegram](https://img.shields.io/badge/chat-telegram-0d86d7?style=flat-square)](https://t.me/genshinhelper)
+
+```
+
+░█▀▀▀░█▀▀░█▀▀▄░█▀▀░█░░░░░▀░░█▀▀▄░█░░░░█▀▀░█░░▄▀▀▄░█▀▀░█▀▀▄
+░█░▀▄░█▀▀░█░▒█░▀▀▄░█▀▀█░░█▀░█░▒█░█▀▀█░█▀▀░█░░█▄▄█░█▀▀░█▄▄▀
+░▀▀▀▀░▀▀▀░▀░░▀░▀▀▀░▀░░▀░▀▀▀░▀░░▀░▀░░▀░▀▀▀░▀▀░█░░░░▀▀▀░▀░▀▀
+
+```
 
 </div>
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-## 📖 目录
+## Table of Contents
 
-- [🌀1. 前言](#1-%E5%89%8D%E8%A8%80)
-- [💡2. 特性](#2-%E7%89%B9%E6%80%A7)
-- [🛠3. 配置](#%F0%9F%9B%A03-%E9%85%8D%E7%BD%AE)
-  - [3.1 获取参数](#31-%E8%8E%B7%E5%8F%96%E5%8F%82%E6%95%B0)
-  - [3.2 使用参数](#32-%E4%BD%BF%E7%94%A8%E5%8F%82%E6%95%B0)
-  - [3.3 配置多账号](#33-%E9%85%8D%E7%BD%AE%E5%A4%9A%E8%B4%A6%E5%8F%B7)
-- [📐4. 部署](#4-%E9%83%A8%E7%BD%B2)
-  - [4.1 Docker](#41-docker)
-  - [4.2 Python Package](#42-python-package)
-  - [4.3 Tencent Cloud SCF (Serverless)](#43-tencent-cloud-scf-serverless)
-  - [4.4 Alibaba Cloud FC (Serverless)](#44-alibaba-cloud-fc-serverless)
-  - [4.5 GitHub Actions (Serverless)](#45-github-actions-serverless)
-- [🔔5. 订阅](#5-%E8%AE%A2%E9%98%85)
-- [🧬6. 环境变量](#%F0%9F%A7%AC6-%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F)
-- [🎉7. 致谢](#7-%E8%87%B4%E8%B0%A2)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+	* [Docker](#docker)
+	* [PyPI Package](#pypi-package)
+	* [Serverless](#serverless)
+		+ [Tencent Cloud SCF](#tencent-cloud-scf)
+		+ [Alibaba Cloud FC](#alibaba-cloud-fc)
+- [Configuration](#configuration)
+	* [Environment Variables](#environment-variables)
+	* [Configuration file](#configuration-file)
+	* [Multiple accounts](#multiple-accounts)
+- [Contributing](#contributing)
+- [Help and Support](#help-and-support)
+- [Acknowledgements](#acknowledgements)
+- [License](#license)
 
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+`If this project is helpful to you, please give us a ⭐️Star QAQ ♥`
 
-## 🌀1. 前言
+## Features
 
-> genshinhelper 可以自动化为你获取原神每日福利
+- [x] **miHoYo BBS Genshin Impact daily check-in**
+- [x] **HoYoLAB Community Genshin Impact daily check-in**
+- [x] **Weibo super topic daily check-in**
+- [x] **Support subscription push**
+- [x] **Support multiple accounts**
+- [x] **Support multiple roles (CN Server)**
 
-原神是少有的游戏本体和签到福利分离的游戏，玩家为了签到还要额外下载米游社 App。
+## Installation
 
-平心而论，目前的每日签到奖励真的不咋地，都知道是蚊子腿。事实上，你完全可以选择无视签到，不签也没啥大的损失；或者选择手动签到，但这样的话哪天忘记打卡了就很头疼。
+This project uses [Docker](https://www.docker.com/) or [Python3](https://www.python.org/). Go check it out if you don't have one of them locally installed.
 
-为了原石、摩拉和紫色经验书等签到奖励，这个项目应运而生，可以实现自动每日签到。
+- Docker
 
-	如果觉得本项目对你有帮助，请顺手点个 ⭐Star 吧QAQ ♥
+You can use the following command to pull the image:
 
-## 💡2. 特性
-
-- [x] **米游社原神每日签到**
-- [x] **米游社国际版(HoYoLAB)原神每日签到**
-- [x] **微博超话签到** 支持任意 IP 签到
-- [x] **原神超话功能** 活动监测 + 领兑换码 + 多方推送
-- [x] **支持订阅推送** 可选多种订阅方式，每天将签到结果推送给用户
-- [x] **支持多个账号** 不同账号的 Cookie 值之间用`#`分隔，如：`<cookie1>#<cookie2>#<cookie3>`
-- [x] **支持多个角色** 支持绑定官服和B站服的米游社账号
-- [ ] **虎扑原神签到**
-
-## 🛠3. 配置
-
-部署之前请先获取相关自定义配置，包括目标网站的 Cookies 和各种订阅方式的 Token 或 Key 等参数。
-
-### 3.1 获取参数
-
-各种订阅方式的 Token 或 Key 可以在对应网站的使用文档中找到获取方法，这里不再赘述；而目标网站的 Cookies 需要自己获取。
-
-下面演示如何获取米游社的 Cookie，其他网站同理：
-
-1. 浏览器**无痕模式**打开 [https://bbs.mihoyo.com/ys/](https://bbs.mihoyo.com/ys/) ，登录账号
-2. 按`F12`，打开`开发者工具`，找到并点击`Network`
-3. 按`F5`刷新页面，按下图复制 Cookie：
-
-![How to get mys cookie](https://i.loli.net/2020/10/28/TMKC6lsnk4w5A8i.png)
-
-当触发`Debugger`时，可尝试按`Ctrl + F8`关闭，然后再次刷新页面，最后复制 Cookie。也可以使用另一种方法：
-
-1. 复制代码 `var cookie=document.cookie;var ask=confirm('Cookie:'+cookie+'\n\nDo you want to copy the cookie to the clipboard?');if(ask==true){copy(cookie);msg=cookie}else{msg='Cancel'}`
-2. 浏览器**无痕模式**打开 [https://bbs.mihoyo.com/ys/](https://bbs.mihoyo.com/ys/) ，登录账号
-3. 按`F12`，打开`开发者工具`，找到并点击`Console`
-4. 控制台粘贴代码并运行，获得类似`Cookie:xxxxxx`的输出信息
-5. `xxxxxx`部分即为所需复制的 Cookie，点击确定复制
-
-> 提示：获取的米游社/米游社国际版 Cookie 应包含`account_id`和`cookie_token`两个字段，否则视为获取失败。这时可尝试退出账号，打开无痕模式重新获取。
-
-特别地，微博还要额外的`aid`和`s`参数，需要在 微博国际版App 抓包取得。
-
-### 3.2 使用参数
-
-项目有两种使用自定义配置的方式：
-
-- 环境变量
-
-直接将你的配置写入环境变量，变量列表可参考[环境变量](#6-环境变量)。
-
-- 配置文件
-
-推荐将配置文件模板 [config.example.json](genshinhelper/config/config.example.json) 拷贝并重命名为`config.json`再填入你的配置；也可以直接使用 [config.example.json](genshinhelper/config/config.example.json) 文件。用法可参考[配置文件文档](genshinhelper/config/README.md)。
-
-### 3.3 配置多账号
-
-Cookie 支持配置多个，不同账号的 Cookie 值之间用`#`分隔，如：`COOKIE_MIHOYOBBS="<cookie1>#<cookie2>#<cookie3>"`
-
-## 📐4. 部署
-
-### 4.1 Docker 
-
-Docker Hub: [https://registry.hub.docker.com/r/yindan/genshinhelper](https://registry.hub.docker.com/r/yindan/genshinhelper)
-
+```sh
+$ docker pull yindan/genshinhelper
 ```
-# 安装 Docker
-wget -qO- get.docker.com | bash
 
-# 启动 Docker
-systemctl start docker
+This pulls the latest release of `genshinhelper`.
 
-# 设置 Docker 开机自启
-systemctl enable docker
+It can be found at [Docker Hub](https://registry.hub.docker.com/r/yindan/genshinhelper/).
 
-# 基本使用
-# 需要什么功能就用 -e 变量名="变量值" 的形式添加，此处以米游社(COOKIE_MIHOYOBBS)和Server酱(SCKEY)做演示
-docker run -d --name=genshinhelper \
+- PyPI Package
+
+You can also use the [pypi package](https://pypi.org/project/genshinhelper/):
+
+```sh
+$ pip install genshinhelper
+```
+
+## Usage
+
+### Docker
+
+In the following commands, `COOKIE_MIHOYOBBS` is the variable name and `<COOKIE_MIHOYOBBS>` is your `COOKIE_MIHOYOBBS` value. The same goes for `DISCORD_WEBHOOK` and so on.
+
+You can find all the environment variables used in this project in the [Configuration](#configuration) section.
+
+- Basic usage
+
+```sh
+$ docker run -d --name=genshinhelper \
 -e COOKIE_MIHOYOBBS="<COOKIE_MIHOYOBBS>" \
--e SCKEY="<SCKEY>" \
+-e DISCORD_WEBHOOK="<DISCORD_WEBHOOK>" \
 --restart always \
 yindan/genshinhelper:latest
+```
 
-# 高级使用
-# 使用 -e CRON_SIGNIN="0 7 * * *" 的形式自定义运行时间，所用时间为北京时间
-docker run -d --name=genshinhelper \
+- Advanced usage
+
+Docker triggers tasks at `6:00` (UTC+8) every day by default. Use the `CRON_SIGNIN` variable to customize the trigger time.
+
+> Tips: Trigger time according to UTC+8
+
+```sh
+$ docker run -d --name=genshinhelper \
 -e COOKIE_MIHOYOBBS="<COOKIE_MIHOYOBBS>" \
--e SCKEY="<SCKEY>" \
+-e DISCORD_WEBHOOK="<DISCORD_WEBHOOK>" \
 -e CRON_SIGNIN="0 7 * * *" \
 --restart always \
 yindan/genshinhelper:latest
+```
 
-# 使用 config.json
-# 假设你的配置文件是 `/etc/genshin/config.json`
-docker run -d --name=genshinhelper \
+If you want to use the `config.json` configuration file, use the following command to map the relevant folder.
+
+Assuming your configuration file is located at `/etc/genshin/config.json`.
+
+```sh
+$ docker run -d --name=genshinhelper \
 -e COOKIE_MIHOYOBBS="<COOKIE_MIHOYOBBS>" \
--e SCKEY="<SCKEY>" \
+-e DISCORD_WEBHOOK="<DISCORD_WEBHOOK>" \
 -e CRON_SIGNIN="0 7 * * *" \
 -v /etc/genshin:/app/genshinhelper/config \
 --restart always \
 yindan/genshinhelper:latest
-
-# 查看日志
-docker logs -f genshinhelper
 ```
 
-### 4.2 Python Package
+- Useful commands
 
 ```
-pip install genshinhelper
+# Logs
+$ docker logs -f genshinhelper --tail 100
 
-# 添加相关环境变量后执行
-python genshinhelper
+# Restart
+$ docker restart genshinhelper
+
+# Update
+$ docker pull yindan/genshinhelper
+$ docker rm -f genshinhelper
+# Re-create the container with the latest image according to basic usage or Advanced usage.
+
+# Uninstall
+$ docker rm -f genshinhelper
+$ docker image rm genshinhelper
 ```
 
-### 4.3 Tencent Cloud SCF (Serverless)
+### PyPI Package
 
-> 提示：Cron表达式为 7 位数
+You **must add environment variables** in host at first. See [Configuration](#configuration) for more details.
 
-- 前往 [releases](https://github.com/agbulletz/genshinhelper/releases) 页面，下载最新的`genshinhelper-xxx-serverless.zip`压缩包
-- 前往 [云函数 SCF 管理控制台](https://console.cloud.tencent.com/scf/) -->`函数服务`-->`新建`-->`自定义创建`-->`基础配置`-->`本地上传zip包`-->`上传`-->`本地上传zip包`--> 选择下载的`genshinhelper-xxx-serverless.zip`压缩包-->`完成`
+The following command assume that you have already added the environment variables.
 
-![2021-4-27 16-37-59.png](https://i.loli.net/2021/04/27/2gHPKxcsqbwhMTN.png)
-
-- 前往`genshinhelper`-->`函数管理`-->`函数配置`-->`编辑`
-
-![2021-4-27 17-14-54.png](https://i.loli.net/2021/04/27/5uo7nx3zMBhUbXg.png)
-
-- 修改`执行超时时间`为`300`秒，在`环境变量`添加环境变量，变量列表可参考[环境变量](#6-环境变量)。
-
-![2021-4-27 17-16-28.png](https://i.loli.net/2021/04/27/nTrm8GdFVXl9xsI.png)
-
-- 前往`genshinhelper`-->`触发管理`-->`新建触发器`--> 按下图进行配置：
-
-![2021-4-27 16-45-40.png](https://i.loli.net/2021/04/27/9yxvGT73itAHRqC.png)
-
-### 4.4 Alibaba Cloud FC (Serverless)
-
-> 提示：Cron表达式为 6 位数
-
-International: https://www.alibabacloud.com/zh/product/function-compute
-
-中国站: https://cn.aliyun.com/product/fc
-
-- 前往 [releases](https://github.com/agbulletz/genshinhelper/releases) 页面，下载最新的`genshinhelper-xxx-serverless.zip`压缩包
-- 前往 [函数计算 FC 管理控制台](https://fc.console.aliyun.com/fc/) -->`新建函数`-->`事件函数`-->`代码包上传`-->`上传代码`--> 选择下载的`genshinhelper-xxx-serverless.zip`压缩包 --> 按下图进行配置，注意函数入口为`index.main_handler` -->`新建`
-
-![aly1.png](https://i.loli.net/2021/04/27/NyW1EGML4cHgo6Z.png)
-
-- 前往`genshinhelper` -->`概览`-->`修改配置`
-
-![aly2.png](https://i.loli.net/2021/04/27/1x2kbsVjMUXlwRv.png)
-
-- 下拉找到`环境变量`添加环境变量，变量列表可参考[环境变量](#6-环境变量)。
-
-![aly3.png](https://i.loli.net/2021/04/27/e7GTEumrIh5q3Kt.png)
-
-- 前往`genshinhelper`-->`触发器`-->`创建触发器`--> 按下图进行配置：
-
-![aly4.png](https://i.loli.net/2021/04/27/5Oj2acDs3VCture.png)
-
-### 4.5 GitHub Actions (Serverless)
-
-> 提示：Cron表达式为 5 位数
-
-**由于此方式可能会违反 GitHub 使用条款，导致账号被封禁，故不再提供。如坚持使用，请自行探索并承担相应风险。**
-
-## 🔔5. 订阅
-
-支持 [Bark App](https://apps.apple.com/us/app/bark-%E7%BB%99%E4%BD%A0%E7%9A%84%E6%89%8B%E6%9C%BA%E5%8F%91%E6%8E%A8%E9%80%81/id1403753865) 、
-酷推、钉钉机器人、Discord、iGot聚合推送、pushplus、Server酱、Telegram robot、企业微信应用、企业微信机器人和自定义推送
-单个或多个推送，通过配置环境变量或填写配置文件开启对应推送方式，变量名称列表详见下文`环境变量`部分内容。
-
-- 自定义推送
-
-```json
-{
-    "method":"post",
-    "url":"",
-    "data":{
-        
-    },
-    "retcode_key":"",
-    "retcode_value":200,
-    "data_type":"data",
-    "merge_title_and_desp":false,
-    "set_data_title":"",
-    "set_data_sub_title":"",
-    "set_data_desp":""
-}
+```sh
+$ python -m genshinhelper
 ```
-```
-Custom notifier:
-    method:                 Required, the request method. Default: post.
-    url:                    Required, the full custom push link.
-    data:                   Optional, the data to sent. default: {}, you can add additional parameters.
-    retcode_key:            Required, the key of the status code returned by the response body.
-    retcode_value:          Required, the value of the status code returned by the response body.
-    data_type:              Optional, the way to send data, choose from params|json|data, default: data.
-    merge_title_and_desp:   Optional, if or not the title (application name + running status) and the running result will be merged. Default: false.
-    set_data_title:         Required, the key of the message title in the data of the push method.
-    set_data_sub_title:     Optional, the key of the message body in the push data.
-    set_data_desp:          Optional, the key of the message body in the push data.
 
-自定义推送:
-    method:                 必填,请求方式.默认: post.
-    url:                    必填,完整的自定义推送链接.
-    data:                   选填,发送的data.默认为空,可自行添加额外参数.
-    retcode_key:            必填,响应体返回的状态码的key.
-    retcode_value:          必填,响应体返回的状态码的value.
-    data_type:              选填,发送data的方式,可选params|json|data,默认: data.
-    merge_title_and_desp:   选填,是否将标题(应用名+运行状态)和运行结果合并.默认: false.
-    set_data_title:         必填,推送方式data中消息标题的key.
-    set_data_sub_title:     选填,推送方式data中消息正文的key.有的推送方式正文的key有次级结构,需配合set_data_title构造子级,与set_data_desp互斥.
-                                例如: 企业微信中,set_data_title填text,set_data_sub_title填content.
-    set_data_desp:          选填,推送方式data中消息正文的key.例如: server酱的为desp.
-                                与set_data_sub_title互斥,两者都填则本项不生效.
-```
-例子：
-写一个 ServerChan 的自定义推送。
+### Serverless
 
-查看文档得到 ServerChan 推送所需要的信息：
-需要的`url`形式为：`https://sc.ftqq.com/{SCKEY}.send`
-发送的`data`形式为：`{'text': test','desp':desp}`
-消息发送成功响应体为：`{'errno': 0, 'errmsg': 'OK'}`
+If you don't have a host, you can try using serverless deployment. It can help you to automatically check-in every day.
 
-自定义推送配置如下：
-```
-{
-    "method":"post",
-    "url":"https://sc.ftqq.com/{直接填写你的SCKEY}.send",
-    "data":{
-      
-    },
-    "retcode_key":"errno",
-    "retcode_value":0,
-    "data_type":"data",
-    "merge_title_and_desp":true,
-    "set_data_title":"test",
-    "set_data_sub_title":"",
-    "set_data_desp":"desp"
-}
-```
-> 提示：若开启订阅推送，无论成功与否，都会收到推送通知。
+You need to download the latest `genshinhelper-xxx-serverless.zip` serverless zip file at first. The entry point of the zip file is `index.main_handler`.
 
-## 🧬6. 环境变量
+#### Tencent Cloud SCF
 
-下表罗列了本项目所用到的全部环境变量
+> Tips: Cron expressions are 7 digits
+
+[International](https://intl.cloud.tencent.com/product/scf) | [中国站](https://cloud.tencent.com/product/scf)
+
+- Go to [云函数 SCF 管理控制台](https://console.cloud.tencent.com/scf/) → `函数服务` → `新建` → `自定义创建` → `基础配置` → `本地上传zip包` → `上传` → `本地上传zip包` → Select the downloaded file `genshinhelper-xxx-serverless.zip` → `完成`
+
+![SCF_upload](https://i.loli.net/2021/04/27/2gHPKxcsqbwhMTN.png)
+
+- Go to `genshinhelper` → `函数管理` → `函数配置` → `编辑`
+
+![SCF_edit](https://i.loli.net/2021/04/27/5uo7nx3zMBhUbXg.png)
+
+- Modify `执行超时时间` to `300` seconds and add environment variables in `环境变量`. The list of environment variables can be found in the [Configuration](#configuration) section.
+
+![SCF_add_environment_variables](https://i.loli.net/2021/04/27/nTrm8GdFVXl9xsI.png)
+
+- Go to `genshinhelper` → `触发管理` → `新建触发器` → Configure as shown below:
+
+![SCF_Triggers](https://i.loli.net/2021/04/27/9yxvGT73itAHRqC.png)
+
+#### Alibaba Cloud FC
+
+> Tips: Cron expressions are 6 digits
+
+[International](https://www.alibabacloud.com/zh/product/function-compute) | [中国站](https://cn.aliyun.com/product/fc)
+
+ - Go to [函数计算 FC 管理控制台](https://fc.console.aliyun.com/fc/) → `新建函数` → `事件函数` → `代码包上传` → `上传代码` → Select the downloaded file `genshinhelper-xxx-serverless.zip` → Configure as shown below. Note that the entry point is `index.main_handler` → `新建`
+
+![FC_upload](https://i.loli.net/2021/04/27/NyW1EGML4cHgo6Z.png)
+
+- Go to `genshinhelper` → `概览` → `修改配置`
+
+![FC_edit](https://i.loli.net/2021/04/27/1x2kbsVjMUXlwRv.png)
+
+- Scroll down and find `环境变量` to add environment variables. The list of environment variables can be found in the [Configuration](#configuration) section.
+
+![FC_add_environment_variables](https://i.loli.net/2021/04/27/e7GTEumrIh5q3Kt.png)
+
+- Go to `genshinhelper` → `触发器` → `创建触发器` → Configure as shown below:
+
+![FC_Triggers](https://i.loli.net/2021/04/27/5Oj2acDs3VCture.png)
+
+## Configuration
+
+The project has two ways of using custom configurations.
+
+### Environment Variables
+
+You can write your configuration directly into the environment variables.
+
+The following table lists all the environment variables used in this project:
+
+<details>
+<summary>Click here</summary>
 
 | **Variable Name** | **Required** | **The name in the config.json** | **Default**        | **Website**                                           | **Description**                                                                             |
 |-------------------|--------------|---------------------------------|--------------------|-------------------------------------------------------|---------------------------------------------------------------------------------------------|
@@ -320,21 +250,105 @@ Custom notifier:
 | WW_APP_AGENTID    | ❌            | wechat_work_app_agentid         |                    |                                                       | 企业微信应用的agentid.在'管理后台'->'应用与小程序'->'应用',点进某应用里查看.                            |
 | WW_BOT_KEY        | ❌            | wechat_work_bot_key             |                    | https://work.weixin.qq.com/api/doc/90000/90136/91770  | 企业微信机器人WebHook地址中key后的字段.                                                           |
 
-## 🎉7. 致谢
+</details>
 
-原项目 [y1ndan/genshin-impact-helper](https://github.com/y1ndan/genshin-impact-helper) 于2021.04.02被GitHub屏蔽。感谢所有为该项目贡献代码的大佬们以及使用该项目的小可爱。
+### Configuration file
 
-Huge thanks to:
-@PomeloWang
-@Celeter
-@Arondight
-@chenkid999
-@xe5700
-@Renari
-@journey-ad
-@aflyhorse
-@thesadru
-@PeterPanZH
-@cainiaowu
-@alwaysmiddle
-@qianxu2001
+It is recommended to copy and rename `config.example.json` to `config.json` before use the configuration file.
+
+A `config.example.json` in JSON like below:
+
+<details>
+<summary>Click here</summary>
+
+```json
+{
+    "language":"en-us",
+    "cookies":{
+        "cookie_mihoyobbs":"",
+        "cookie_hoyolab":"",
+        "cookie_weibo":"",
+        "weibo_intl_aid":"",
+        "weibo_intl_s":"",
+        "cookie_ka":""
+    },
+    "notifiers":{
+        "bark_key":"",
+        "bark_sound":"healthnotification",
+        "cool_push_skey":"",
+        "cool_push_mode":"send",
+        "custom_notifier":{
+            "method":"post",
+            "url":"",
+            "data":{
+
+            },
+            "retcode_key":"",
+            "retcode_value":200,
+            "data_type":"data",
+            "merge_title_and_desp":false,
+            "set_data_title":"",
+            "set_data_sub_title":"",
+            "set_data_desp":""
+        },
+        "dingtalk_bot_token":"",
+        "dingtalk_bot_secret":"",
+        "discord_webhook":"",
+        "igot_key":"",
+        "push_plus_token":"",
+        "push_plus_user":"",
+        "server_chan_key":"",
+        "server_chan_turbo_key":"",
+        "telegram_bot_api":"api.telegram.org",
+        "telegram_bot_token":"",
+        "telegram_user_id":"",
+        "wechat_work_id":"",
+        "wechat_work_app_secret":"",
+        "wechat_work_app_userid":"@all",
+        "wechat_work_app_agentid":"",
+        "wechat_work_bot_key":""
+    }
+}
+```
+
+</details>
+
+### Multiple accounts
+
+Multiple account cookies need to be separated by "#" symbol. e.g. `COOKIE_MIHOYOBBS="<cookie1>#<cookie2>#<cookie3>"`
+
+## Contributing
+
+Feel free to dive in! Open an [issue](https://github.com/y1ndan/genshinhelper/issues) or submit PRs.
+
+## Help and Support
+
+Please join our chat groups for help and support.
+
+[QQ Group](https://qm.qq.com/cgi-bin/qm/qr?k=_M9lYFxkYD7yQQR2btyG3pkZWFys_I-l) | 
+[Discord](https://discord.gg/p28845gGfv) | 
+[Telegram](https://t.me/genshinhelper)
+
+## Acknowledgements
+
+Huge thanks to the contributors of the [y1ndan/genshin-impact-helper](https://github.com/y1ndan/genshin-impact-helper) project:
+
+- PomeloWang
+- Celeter
+- Arondight
+- chenkid999
+- xe5700
+- Renari
+- journey-ad
+- aflyhorse
+- thesadru
+- PeterPanZH
+- cainiaowu
+- alwaysmiddle
+- qianxu2001
+
+## License
+
+![License](https://img.shields.io/pypi/l/genshinhelper?style=flat-square)
+
+
