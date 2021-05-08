@@ -22,7 +22,7 @@ setup(
     name='genshinhelper',
     version=__version__,
     packages=find_packages(),
-    url='https://github.com/agbulletz/genshinhelper',
+    url='https://github.com/y1ndan/genshinhelper',
     license='GPLv3',
     author='yindan',
     author_email='y1nd4n@outlook.com',
