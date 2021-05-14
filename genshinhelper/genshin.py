@@ -2,25 +2,16 @@
 Automatically get Genshin Impact daily check-in rewards from miHoYo bbs and HoYoLAB Community.
 
 GitHub:
-    https://github.com/agbulletz/genshinhelper
+    https://github.com/y1ndan/genshinhelper
 """
-import hashlib
 import json
-import random
-import string
 import time
 import uuid
 from functools import wraps
 
 from .config import config
 from .exceptions import CookiesExpired
-from .utils import MESSAGE_TEMPLATE, log, request
-
-
-def hexdigest(text):
-    md5 = hashlib.md5()
-    md5.update(text.encode())
-    return md5.hexdigest()
+from .utils import MESSAGE_TEMPLATE, log, request, get_ds
 
 
 def _data_handler(func):
@@ -171,9 +162,8 @@ class __BaseCheckin(object):
 
 
 class YuanshenCheckin(__BaseCheckin):
-    APP_VERSION = '2.3.0'
     ACT_ID = 'e202009291139501'
-    USER_AGENT = 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBS/{}'.format(APP_VERSION)
+    USER_AGENT = 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBS/{}'
     REFERER_URL = 'https://webstatic.mihoyo.com/bbs/event/signin-ys/index.html?bbs_auth_required={}&act_id={}&utm_source={}&utm_medium={}&utm_campaign={}'.format('true', ACT_ID, 'bbs', 'mys', 'icon')
     ROLES_INFO = {}
     INFO_URL = ''
@@ -182,27 +172,16 @@ class YuanshenCheckin(__BaseCheckin):
     REWARD_URL = 'https://api-takumi.mihoyo.com/event/bbs_sign_reward/home?act_id={}'.format(ACT_ID)
     SIGN_URL = 'https://api-takumi.mihoyo.com/event/bbs_sign_reward/sign'
 
-    @property
-    def ds(self):
-        # v2.3.0-web @povsister & @journey-ad
-        n = 'h8w582wxwgqvahcdkpvdhbh2w9casgfl'
-        i = str(int(time.time()))
-        r = ''.join(random.sample(string.ascii_lowercase + string.digits, 6))
-        c = hexdigest(f'salt={n}&t={i}&r={r}')
-        return f'{i},{r},{c}'
-
     def get_header(self):
+        client_type, app_version, ds = get_ds('5')
         header = super().get_header()
         header.update({
+            'User-Agent': self.USER_AGENT.format(app_version),
             'x-rpc-device_id': str(uuid.uuid3(uuid.NAMESPACE_URL, self._cookie)).replace(
                 '-', '').upper(),
-            # 1:  ios
-            # 2:  android
-            # 4:  pc web
-            # 5:  mobile web
-            'x-rpc-client_type': '5',
-            'x-rpc-app_version': self.APP_VERSION,
-            'DS': self.ds
+            'x-rpc-client_type': client_type,
+            'x-rpc-app_version': app_version,
+            'DS': ds
         })
         return header
 

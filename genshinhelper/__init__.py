@@ -2,9 +2,15 @@ from . import notifiers
 from ._version import __version__
 from .config import config
 from .genshin import YuanshenCheckin, GenshinCheckin
+from .miyoubi import MiyoubiCheckin
 from .utils import log, get_cookies
 from .weibo import SuperTopicCheckin, RedemptionCode
 
+banner = """
+░█▀▀▀░█▀▀░█▀▀▄░█▀▀░█░░░░░▀░░█▀▀▄░█░░░░█▀▀░█░░▄▀▀▄░█▀▀░█▀▀▄
+░█░▀▄░█▀▀░█░▒█░▀▀▄░█▀▀█░░█▀░█░▒█░█▀▀█░█▀▀░█░░█▄▄█░█▀▀░█▄▄▀
+░▀▀▀▀░▀▀▀░▀░░▀░▀▀▀░▀░░▀░▀▀▀░▀░░▀░▀░░▀░▀▀▀░▀▀░█░░░░▀▀▀░▀░▀▀
+"""
 message_box = []
 exitcode = 0
 
@@ -46,6 +52,7 @@ def __run_sign(name, cookies, func):
 
 
 def main():
+    print(banner)
     log.info(f'🌀 genshinhelper v{__version__}')
     log.info('Running process...')
 
@@ -57,6 +64,10 @@ def main():
     # miHoYo bbs
     mys_cookies = get_cookies(config.COOKIE_MIHOYOBBS)
     mys_success_count, mys_failure_count = __run_sign('米游社原神签到', mys_cookies, YuanshenCheckin)
+
+    # Miyoubi
+    myb_cookies = get_cookies(config.COOKIE_MIYOUBI)
+    myb_success_count, myb_failure_count = __run_sign('米游社米游币签到', myb_cookies, MiyoubiCheckin)
 
     # HoYoLAB Community
     lab_cookies = get_cookies(config.COOKIE_HOYOLAB)
@@ -73,8 +84,8 @@ def main():
     message_box.append('```')
     message_box = '\n'.join(message_box)
 
-    success_count = mys_success_count + lab_success_count + wb_success_count + ka_success_count
-    failure_count = mys_failure_count + lab_failure_count + wb_failure_count + ka_failure_count
+    success_count = mys_success_count + myb_success_count + lab_success_count + wb_success_count + ka_success_count
+    failure_count = mys_failure_count + myb_failure_count + lab_failure_count + wb_failure_count + ka_failure_count
 
     # Remove '```' and print result to console
     log.info('RESULT:' + message_box.split('```')[1])

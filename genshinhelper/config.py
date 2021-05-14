@@ -31,6 +31,7 @@ class Config(object):
         # Cookie configs
         # Cookie from https://bbs.mihoyo.com/ys/
         self.COOKIE_MIHOYOBBS = os.environ['COOKIE_MIHOYOBBS'] if os.environ.get('COOKIE_MIHOYOBBS') else config_json['cookies']['cookie_mihoyobbs']
+        self.COOKIE_MIYOUBI = os.environ['COOKIE_MIYOUBI'] if os.environ.get('COOKIE_MIYOUBI') else config_json['cookies']['cookie_miyoubi']
 
         # Cookie from https://www.hoyolab.com/genshin/
         self.COOKIE_HOYOLAB = os.environ['COOKIE_HOYOLAB'] if os.environ.get('COOKIE_HOYOLAB') else config_json['cookies']['cookie_hoyolab']

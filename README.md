@@ -222,6 +222,7 @@ The following table lists all the environment variables used in this project:
 |-------------------|--------------|---------------------------------|--------------------|-------------------------------------------------------|---------------------------------------------------------------------------------------------|
 | LANGUAGE          | ❌            | language                        | en-us              |                                                       | Rewards language for HoYoLAB daily check-in.                                                |
 | COOKIE_MIHOYOBBS  | ❌            | cookie_mihoyobbs                |                    | https://bbs.mihoyo.com/ys/                            | Cookie from miHoYo bbs.                                                                     |
+| COOKIE_MIYOUBI  | ❌            | cookie_miyoubi                  |                    | https://bbs.mihoyo.com/ys/                            | Cookie from miHoYo bbs.                                                                     |
 | COOKIE_HOYOLAB    | ❌            | cookie_hoyolab                  |                    | https://www.hoyolab.com/genshin/                      | Cookie from HoYoLAB community.                                                              |
 | COOKIE_WEIBO      | ❌            | cookie_weibo                    |                    | https://m.weibo.cn/                                   | Cookie from Weibo intl app. Cookie from https://m.weibo.cn might work.                      |
 | WEIBO_INTL_AID    | ❌            | weibo_intl_aid                  |                    |                                                       | Weibo intl app's aid-parameters.                                                            |
@@ -266,6 +267,7 @@ A `config.example.json` in JSON like below:
     "language":"en-us",
     "cookies":{
         "cookie_mihoyobbs":"",
+        "cookie_miyoubi":"",
         "cookie_hoyolab":"",
         "cookie_weibo":"",
         "weibo_intl_aid":"",
@@ -330,6 +332,8 @@ Please join our chat groups for help and support.
 [Telegram](https://t.me/genshinhelper)
 
 ## Acknowledgements
+
+The idea for the miyoubi feature is inspired by XiaoMiku01's project [miyoubiAuto](https://github.com/XiaoMiku01/miyoubiAuto).
 
 Huge thanks to the contributors of the [y1ndan/genshin-impact-helper](https://github.com/y1ndan/genshin-impact-helper) project:
 
