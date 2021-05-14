@@ -62,10 +62,8 @@ class MiyoubiCheckin(object):
     def sign(self, id):
         log.info('正在签到...')
         try:
-            print(self.get_header())
             url = self.SIGN_URL.format(id)
             response = request('post', url, headers=self.get_header()).json()
-            print(response)
         except Exception as e:
             raise Exception(e)
         else:
@@ -101,7 +99,7 @@ class MiyoubiCheckin(object):
         else:
             if response.get('message') == 'OK':
                 log.info(f"看帖成功: {post['title']}")
-                self.message_box.append(f"看帖成功: {post['title']}")
+                self.message_box.append('看帖成功')
 
     def upvote_post(self, post):
         log.info('正在点赞...')
@@ -116,7 +114,7 @@ class MiyoubiCheckin(object):
         else:
             if response.get('message') == 'OK':
                 log.info(f"点赞成功: {post['title']}")
-                self.message_box.append(f"点赞成功: {post['title']}")
+                self.message_box.append('点赞成功')
 
     def share_post(self, post):
         log.info('正在分享...')
@@ -128,7 +126,7 @@ class MiyoubiCheckin(object):
         else:
             if response.get('message') == 'OK':
                 log.info(f"分享成功: {post['title']}")
-                self.message_box.append(f"分享成功: {post['title']}")
+                self.message_box.append('分享成功')
 
     def run(self):
         # 原神板块
