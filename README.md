@@ -118,9 +118,6 @@ Assuming your configuration file is located at `/etc/genshin/config.json`.
 
 ```sh
 $ docker run -d --name=genshinhelper \
--e COOKIE_MIHOYOBBS="<COOKIE_MIHOYOBBS>" \
--e DISCORD_WEBHOOK="<DISCORD_WEBHOOK>" \
--e CRON_SIGNIN="0 7 * * *" \
 -v /etc/genshin:/app/genshinhelper/config \
 --restart always \
 yindan/genshinhelper:latest
