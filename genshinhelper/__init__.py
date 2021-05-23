@@ -57,6 +57,7 @@ def main():
     log.info('Running process...')
 
     global message_box
+    message_box = []
 
     # Use markdown code block
     message_box.append('```')
