@@ -202,6 +202,40 @@ You need to download the latest `genshinhelper-xxx-serverless.zip` serverless zi
 
 ![FC_Triggers](https://i.loli.net/2021/04/27/5Oj2acDs3VCture.png)
 
+#### AWS Lambda
+
+> Tips: About AWS cron expressions, check out [here](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html).
+
+- Go to [AWS Lambda](https://aws.amazon.com/lambda/) → Sign In to the Console → Choose a region (Singapore for example)
+
+![AWS_console](https://i.loli.net/2021/05/26/kbBxgRPmF8XOecs.png)
+
+- Click `All services` → `Lambda`
+- In the left, `Functions` → `Create function`
+-  Choose `Author from scratch` / Function name: *yourAwesomeFunctionName* / **Runtime: Python 3.8** → `Create function`
+
+![Lambda_Create_Function](https://i.loli.net/2021/05/26/rGQVH8usTtIO6S1.png)
+
+- In function dashboard, `Code` → `Upload from` → `.zip file` → Select the downloaded file `genshinhelper-xxx-serverless.zip` → `Save`
+
+![Upload_Function](https://i.loli.net/2021/05/26/hkrJ1iyFQERdqbp.png)
+
+- Scroll down, edit runtime settings. Change the original `lambda_function.lambda_handler` in `Handler` section to `index.main_handler` → `Save`
+
+![RuntimeSettings](https://i.loli.net/2021/05/26/qHwotxNWTaXVCyu.png)
+
+- Back to Function overview, click `Add trigger` → search / choose `EventBridge` → Configue as shown below
+
+![EventBridge_Conifg](https://i.loli.net/2021/05/26/wjduP1vM2bxUz6f.png)
+
+- Function dashboard → `Configuration` → `General configuration` → `Edit` → Timeout change to `5 min 0 sec`
+
+![GeneralSettings](https://i.loli.net/2021/05/26/ksYzJrd8LRDEFen.png)
+
+- `Configuration` → `Environment variables` → `Edit` → `Add environment variable`
+
+![EnvironmentVariables](https://i.loli.net/2021/05/26/oxta4eNdci1FMEs.png)
+
 ## Configuration
 
 The project has two ways of using custom configurations.
