@@ -35,6 +35,7 @@ English | [简体中文](https://www.yindan.me/tutorial/genshin-impact-helper.ht
 	* [Serverless](#serverless)
 		+ [Tencent Cloud SCF](#tencent-cloud-scf)
 		+ [Alibaba Cloud FC](#alibaba-cloud-fc)
+        + [AWS Lambda](#aws-lambda)
 - [Configuration](#configuration)
 	* [Environment Variables](#environment-variables)
 	* [Configuration file](#configuration-file)
