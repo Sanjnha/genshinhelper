@@ -59,7 +59,7 @@ class MiyoubiCheckin(object):
         }
         return header
 
-    def sign(self, id):
+    def sign(self, id,name):
         log.info('正在签到...')
         try:
             url = self.SIGN_URL.format(id)
@@ -68,10 +68,10 @@ class MiyoubiCheckin(object):
             raise Exception(e)
         else:
             if response.get('message') == 'OK' or '重复' in response.get('message'):
-                log.info(f"社区签到: {response.get('message')}")
-                self.message_box.append(f"社区签到: {response.get('message')}")
+                log.info(f"{name}社区签到: {response.get('message')}")
+                self.message_box.append(f"{name}社区签到: {response.get('message')}")
             else:
-                raise Exception(f"社区签到: 失败 {response.get('message')}")
+                raise Exception(f"{name}社区签到: 失败 {response.get('message')}")
 
     def get_posts(self, forum_id):
         try:
@@ -129,15 +129,14 @@ class MiyoubiCheckin(object):
                 self.message_box.append('分享成功')
 
     def run(self):
-        # 原神板块
-        id = 2
+        id = {1: "崩坏3", 2: "原神", 3: "崩坏2", 4: "未定事件簿", 5:"大别野"}
         forum_id = 26
-
-        self.sign(id)
-        posts = self.get_posts(forum_id)
-        [self.view_post(i) for i in random.sample(posts, 3)]
-        [self.upvote_post(i) for i in random.sample(posts, 5)]
-        [self.share_post(i) for i in random.sample(posts, 1)]
+        for i in id.keys():
+            self.sign(i,id[i])
+        posts = self.get_posts
+        [self.view_post(i) for i in random.sample(posts(forum_id), 3)]
+        [self.upvote_post(i) for i in random.sample(posts(forum_id), 5)]
+        [self.share_post(i) for i in random.sample(posts(forum_id), 1)]
 
         return '\n    '.join(self.message_box)
 
