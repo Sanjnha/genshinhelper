@@ -1,10 +1,12 @@
 import re
+import requests
 
 from bs4 import BeautifulSoup
 
+from . import notifiers
 from .config import config
-from .exceptions import CookiesExpired
-from .utils import log, request
+from .exceptions import GenshinHelperException
+from .utils import log, request, extract_cookie
 
 
 class SuperTopicCheckin(object):
@@ -15,68 +17,61 @@ class SuperTopicCheckin(object):
 
     def __init__(self, cookie: str = None):
         self._cookie = cookie
-
-    def get_header(self):
-        header = {
+        self._cookie_wb = config.COOKIE_KA
+        self.headers = {
             'User-Agent': self.USER_AGENT,
-            'Cookie': self._cookie
+            'Cookie': self._cookie_wb
         }
-        return header
 
     def get_follow_data(self):
-        try:
-            url = self.FOLLOW_DATA_URL
-            data = {
-                'aid': config.WEIBO_INTL_AID,
-                'c': 'weicoabroad',
-                'containerid': '100803_-_followsuper',
-                's': config.WEIBO_INTL_S,
-                'ua': 'iPhone12%2C1_iOS14.0.1_Weibo_intl_4140_cell'
+        url = self.FOLLOW_DATA_URL
+        data = {
+            'containerid': '100803_-_followsuper',
+            'aid': extract_cookie('aid', self._cookie),
+            'c': 'weicoabroad',
+            'gsid': extract_cookie('gsid', self._cookie),
+            's': extract_cookie('s', self._cookie),
+            'ua': 'iPhone12%2C1_iOS14.0.1_Weibo_intl_4140_cell'
+        }
+        # turn off certificate verification
+        response = request('get', url, params=data, headers=self.headers, verify=False).json()
+        errno = response.get('errno')
+        if errno:
+            raise GenshinHelperException(f'Failed to get follow super:\n{response}')
+
+        card_group = response.get('cards', [{}])[0].get('card_group', [])
+        follow_list = [
+            card for card in card_group if card.get('card_type') == '8'
+        ]
+        if not follow_list:
+            raise GenshinHelperException('Failed to get follow list, '
+            'please make sure you have followed the Genshin Impact super topic.')
+
+        follow_data = []
+        for item in follow_list:
+            action = item.get('buttons', [{}])[0].get('params', {}).get(
+                'action', '')
+            request_url = ''.join(
+                re.findall('(?<=request_url=)(.*)%26container', action))
+            sign_data = {k: v for (k, v) in data.items()}
+            del sign_data['containerid']
+            sign_data['request_url'] = request_url
+
+            follow = {
+                'name': item.get('title_sub'),
+                'lv': int(re.findall('\d+', item.get('desc1', '0'))[0]),
+                'is_sign': item.get('buttons', [{}])[0].get('name'),
+                'sign_data': sign_data
             }
-            response = request(
-                'get',
-                url,
-                params=data,
-                headers=self.get_header(),
-                verify=False).json()
-        except Exception as e:
-            raise Exception(f'Failed to get follow list:\n{e}')
-        else:
-            card_group = response.get('cards', [{}])[0].get('card_group', [])
-            follow_list = [
-                card for card in card_group if card.get('card_type') == '8'
-            ]
-            if not follow_list:
-                return []
+            follow_data.append(follow)
 
-            follow_data = []
-            for item in follow_list:
-                action = item.get('buttons', [{}])[0].get('params', {}).get(
-                    'action', '')
-                request_url = ''.join(
-                    re.findall('(?<=request_url=)(.*)%26container', action))
-                sign_data = {k: v for (k, v) in data.items()}
-                del sign_data['containerid']
-                sign_data['request_url'] = request_url
+        follow_data.sort(key=lambda k: (k.get('lv', 0)), reverse=True)
 
-                follow = {
-                    'name': item.get('title_sub'),
-                    'lv': int(re.findall('\d+', item.get('desc1', '0'))[0]),
-                    'is_sign': item.get('buttons', [{}])[0].get('name'),
-                    'sign_data': sign_data
-                }
-                follow_data.append(follow)
-
-            follow_data.sort(key=lambda k: (k.get('lv', 0)), reverse=True)
-
-            return follow_data
+        return follow_data
 
     def run(self):
         follow_data = self.get_follow_data()
-        if not follow_data:
-            raise Exception('Empty follow data')
-
-        message = []
+        message_box = []
         for follow in follow_data:
             name = follow.get('name')
             lv = follow.get('lv')
@@ -86,30 +81,22 @@ class SuperTopicCheckin(object):
 
             # Already checked in
             if is_sign == '已签':
-                message.append(f'{name_style} ☑️')
+                message_box.append(f'{name_style} ☑️')
             elif is_sign == '签到':
-                try:
-                    url = self.SIGN_URL
-                    response = request(
-                        'get', url, params=data, headers=self.get_header(), verify=False).json()
-                except Exception as e:
-                    raise Exception(f'Failed to run sign:\n{e}')
+                url = self.SIGN_URL
+                # turn off certificate verification
+                response = request('get', url, params=data, headers=self.headers, verify=False).json()
+                if response.get('result') in (1, '1'):
+                    message_box.append(f'{name_style} ✅')
+                # Already checked in
+                elif '已签到' in response.get('msg', ''):
+                    message_box.append(f'{name_style} ☑️')
                 else:
-                    if response.get('result') in (1, '1'):
-                        message.append(f'{name_style} ✅')
-                    # Already checked in
-                    elif '已签到' in response.get('msg', ''):
-                        message.append(f'{name_style} ☑️')
-                    # Verification required
-                    # elif response.get('result') == 0 and response.get('scheme'):
-                    #     log.error(f'Failed to run sign:\nVerification required.')
-                    else:
-                        raise Exception(f'{name_style} :Failed to run sign:\n{response}')
-
+                    raise GenshinHelperException(f'{name_style} :Failed to run sign:\n{response}')
             else:
-                log.info('Unknown check-in status')
+                raise GenshinHelperException('Unknown check-in status')
 
-        return '\n    '.join(message)
+        return '\n    '.join(message_box)
 
 
 class RedemptionCode(object):
@@ -120,120 +107,130 @@ class RedemptionCode(object):
     MYBOX_URL = 'https://ka.sina.com.cn/html5/mybox'
 
     def __init__(self, cookie: str = None):
-        self._cookie = cookie
-
-    def get_header(self):
-        header = {
+        self._cookie = self.get_ka_cookie(cookie)
+        self.headers = {
             'User-Agent': self.USER_AGENT,
-            'Referer': 'https://m.weibo.cn',
-            'Cookie': self._cookie
+            'Referer': 'https://ka.sina.com.cn/html5'
         }
-        return header
+
+    @staticmethod
+    def get_ka_cookie(cookie):
+        SUB = extract_cookie('SUB', cookie)
+        SUBP = extract_cookie('SUBP', cookie)
+
+        session = requests.session()
+        session.get('https://ka.sina.com.cn/html5')
+        jar = requests.cookies.RequestsCookieJar()
+        jar.set('SUB', SUB)
+        jar.set('SUBP', SUBP)
+        session.cookies.update(jar)
+        cookie_ka = session.cookies.get_dict()
+        return cookie_ka
 
     @property
     def event_gift_ids(self):
-        try:
-            url = self.GENSHIN_CHAOHUA_URL
-            response = request('get', url, headers=self.get_header()).json()
-        except Exception as e:
-            raise Exception(f'Failed to get event information:\n{e}')
-        else:
-            cards = response.get('data', {}).get('cards', [])
-            event_card = [
-                card for card in cards if card.get('itemid') == 'pagemanual_2'
-            ]
-            if not event_card:
-                return []
+        is_event = self.check_event()
+        if not is_event:
+            return []
 
-            group = event_card[0].get('card_group', [{}])[0].get('group', [])
-
-            ids = [i for item in group if '签到' in item.get('title_sub') for i in re.findall('gift/(\d*)', item['scheme'])]
-            return ids
+        group = self.event_card[0].get('card_group', [{}])[0].get('group', [])
+        ids = [i for item in group if '签到' in item.get('title_sub') for i in re.findall(
+            'gift/(\d*)', item['scheme'])]
+        return ids
 
     @property
     def mybox_codes(self):
-        header = self.get_header()
-        header['Referer'] = 'https://ka.sina.com.cn/html5/'
-        try:
-            url = self.MYBOX_URL
-            response = request(
-                'get', url, headers=header, allow_redirects=False)
-        except Exception as e:
-            raise Exception(f'Failed to get mybox codes:\n{e}')
-        else:
-            mybox_codes = []
-            if response.status_code == 200:
-                response.encoding = 'utf-8'
-                soup = BeautifulSoup(response.text, 'html.parser')
-                # print(soup.prettify())
-                boxs = soup.find_all(class_='giftbag')
+        url = self.MYBOX_URL
+        response = request(
+            'get', url, headers=self.headers, cookies=self._cookie, allow_redirects=False)
+        if response.status_code != 200:
+            raise GenshinHelperException('Failed to get my box codes: '
+            'The cookie seems to be invalid, please re-login to m.weibo.cn')
 
-                for box in boxs:
-                    item = {
-                        'id': box.find(class_='deleBtn').get('data-itemid'),
-                        'title': box.find(class_='title itemTitle').text,
-                        'code': box.find('span').parent.contents[1]
-                    }
-                    mybox_codes.append(item)
+        response.encoding = 'utf-8'
+        soup = BeautifulSoup(response.text, 'html.parser')
+        # print(soup.prettify())
+        boxs = soup.find_all(class_='giftbag')
+        mybox_codes = []
+        for box in boxs:
+            item = {
+                'id': box.find(class_='deleBtn').get('data-itemid'),
+                'title': box.find(class_='title itemTitle').text,
+                'code': box.find('span').parent.contents[1]
+            }
+            mybox_codes.append(item)
 
-            elif response.status_code == 302 or 500:
-                raise CookiesExpired('😳 ka.sina: 登录可能失效, 尝试重新登录')
-            else:
-                raise Exception('😳 ka.sina: 个人中心兑换码获取失败')
-            return mybox_codes
+        return mybox_codes
 
     @property
     def mybox_gift_ids(self):
-        ids = [item.get('id') for item in self.mybox_codes]
+        mybox_codes = self.gift_bag = self.mybox_codes
+        ids = [item.get('id') for item in mybox_codes]
         return ids
 
     @property
     def unclaimed_gift_ids(self):
         event_gift_ids = self.event_gift_ids
-        if not event_gift_ids:
-            return []
-
         mybox_gift_ids = self.mybox_gift_ids
         ids = [i for i in event_gift_ids if i not in mybox_gift_ids]
         return ids
 
-    def get_code(self, id):
-        header = self.get_header()
-        header['Referer'] = f'https://ka.sina.com.cn/html5/gift/{id}'
-        data = {'gid': 10725, 'itemId': id, 'channel': 'wblink'}
+    def check_event(self, subscribe = False):
+        url = self.GENSHIN_CHAOHUA_URL
+        response = request('get', url, headers=self.headers).json()
+        cards = response.get('data', {}).get('cards', [])
+        event_card = [
+            card for card in cards if card.get('itemid') == 'pagemanual_2'
+        ]
+        if not event_card:
+            return False
 
-        try:
-            url = self.DRAW_URL
-            response = request(
-                'get', url, params=data, headers=header).json()
-        except Exception as e:
-            raise Exception(f'Failed to get redemption code with ID {id}:\n{e}')
+        if subscribe:
+            message = (
+                '原神超话签到提醒',
+                '亲爱的旅行者，原神微博超话签到活动现已开启，请注意活动时间！如已完成任务，请忽略本信息。'
+            )
+            notifiers.send2all(status=message[0], desp=message[1])
+
+        self.event_card = event_card
+        return True
+
+    def get_code(self, id):
+        headers = self.headers
+        headers['Referer'] = f'https://ka.sina.com.cn/html5/gift/{id}'
+        url = self.DRAW_URL
+        data = {'gid': 10725, 'itemId': id, 'channel': 'wblink'}
+        response = request('get', url, params=data, headers=headers, cookies=self._cookie).json()
+
+        if response.get('k'):
+            log.info(f'The redemption code of ID {id} received successfully')
+            return response['data']['kahao']
+        elif response.get('code') == '2002' and '头像' in response.get('msg', ''):
+            log.error(f'{id}: You can only receive one redemption code per day '
+            'or the code has already been received!')
+        elif response.get('code') == '2002':
+            log.error(f'Failed to get code with ID {id}: {response["msg"]}')
+        elif 'login' in response.get('msg', ''):
+            raise GenshinHelperException('Failed to get code: '
+            'The cookie seems to be invalid, please re-login to m.weibo.cn')
         else:
-            if response.get('k'):
-                log.info(f'{id} 的兑换码领取成功')
-                return response['data']['kahao']
-            elif response.get('code') == '2002' and '头像' in response.get(
-                    'msg', ''):
-                raise Exception(f'🥳 {id}: 每天只能领取一张或该兑换码已经领取过了哦')
-            elif response.get('code') == '2002':
-                raise Exception(f'😳 {id}: {response["msg"]}')
-            elif 'login' in response.get('msg', ''):
-                raise Exception('登录失效, 请重新登录')
-            else:
-                raise Exception(f'😳 {id}: {response}')
+            log.error(f'Failed to get code with ID {id}: {response}')
+
+        return f'{id}: {response["msg"]}'
 
     def run(self):
-        ids = self.unclaimed_gift_ids
-        codes = []
-        if not ids:
-            msg = '没有未领取的兑换码'
-            log.info(msg)
-            codes.append(msg)
-        else:
-            log.info(f'检测到有 {len(ids)} 个未领取的兑换码')
+        is_event = self.check_event(subscribe = True)
+        if not is_event:
+            message = '原神超话现在没有活动哦'
+            return message
 
-            for id in ids:
-                code = self.get_code(id)
-                if code:
-                    codes.append(code)
+        ids = self.unclaimed_gift_ids
+        if not ids:
+            recent_codes = ' *'.join([f"{i['title']} {i['code']}" for i in self.gift_bag[:3]])
+            message = f'原神超话签到活动已开启，但是没有未领取的兑换码。\n    最近 3 个码: {recent_codes}'
+            return message
+
+        log.info(f'检测到有 {len(ids)} 个未领取的兑换码')
+        codes = [self.get_code(id) for id in ids]
         return '\n    '.join(codes)
+

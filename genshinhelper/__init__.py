@@ -36,9 +36,8 @@ def __run_sign(name, cookies, func):
             message.append(result)
             success_count += 1
         except Exception as e:
+            log.exception('TRACEBACK')
             result = f'👻 No.{i}:\n    {e}\n'
-            log.exception(result)
-            # log.error(result)
             message.append(result)
             failure_count += 1
             exitcode = -1

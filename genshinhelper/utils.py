@@ -7,7 +7,6 @@ import string
 import time
 
 import requests
-from requests.exceptions import HTTPError
 
 logging.basicConfig(
     level=logging.INFO,
@@ -19,13 +18,15 @@ log = logger = logging
 
 def request(method: str,
             url: str,
-            max_retry: int = 2,
+            max_retries: int = 2,
             params=None,
             data=None,
             json=None,
             headers=None,
             **kwargs):
-    for i in range(max_retry + 1):
+    # The first HTTP(S) request is not a retry, so need to + 1
+    total_requests = max_retries + 1
+    for i in range(total_requests):
         try:
             response = requests.Session().request(
                 method,
@@ -34,20 +35,18 @@ def request(method: str,
                 data=data,
                 json=json,
                 headers=headers,
+                timeout=21,
                 **kwargs)
-        except HTTPError as e:
-            log.error(f'HTTP error:\n{e}')
-            log.error(f'The No.{i + 1} request failed, retrying...')
-        except KeyError as e:
-            log.error(f'Wrong response:\n{e}')
-            log.error(f'The No.{i + 1} request failed, retrying...')
         except Exception as e:
-            log.error(f'Unknown error:\n{e}')
-            log.error(f'The No.{i + 1} request failed, retrying...')
+            log.error(f'Request failed: {url}\n{e}')
+            if i == max_retries:
+                raise Exception(f'Request failed ({i + 1}/{total_requests}):\n{e}')
+
+            seconds = 5
+            log.info(f'Trying to reconnect in {seconds} seconds ({i + 1}/{max_retries})...')
+            time.sleep(seconds)
         else:
             return response
-
-    raise Exception(f'All {max_retry + 1} HTTP requests failed, die.')
 
 
 def get_cookies(cookies: str = None):
@@ -57,13 +56,26 @@ def get_cookies(cookies: str = None):
         return cookies.splitlines()
 
 
+def extract_cookie(name: str, cookie: str):
+    if name not in cookie:
+        raise Exception('Failed to extract cookie: '
+            f'The cookie does not contain the `{name}` field.')
+    extract_cookie = cookie.split(f'{name}=')[1].split(';')[0]
+    return extract_cookie
+
+
+def cookie_to_dict(cookie):
+    cookie_dict = dict([l.split('=', 1) for l in cookie.split('; ')])
+    return cookie_dict
+
+
 def hexdigest(text):
     md5 = hashlib.md5()
     md5.update(text.encode())
     return md5.hexdigest()
 
 
-def get_ds(type: str=None):
+def get_ds(type: str = None):
     # 1:  ios
     # 2:  android
     # 4:  pc web
@@ -80,7 +92,7 @@ def get_ds(type: str=None):
     r = ''.join(random.sample(string.ascii_lowercase + string.digits, 6))
     c = hexdigest(f'salt={salt}&t={i}&r={r}')
     ds = f'{i},{r},{c}'
-    return client_type, app_version, ds
+    return (client_type, app_version, ds)
 
 
 MESSAGE_TEMPLATE = '''
@@ -90,4 +102,3 @@ MESSAGE_TEMPLATE = '''
     本月累签: {total_sign_day} 天
     签到结果: {status}
     {end:#^18}'''
-

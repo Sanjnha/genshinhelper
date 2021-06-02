@@ -23,30 +23,28 @@ class Config(object):
             config_file = os.path.join(project_path, 'config', 'config.example.json')
 
         with open(config_file, 'r', encoding='utf-8') as f:
-            config_json = json.load(f)
+            self.config_json = json.load(f)
 
         # Language
-        self.LANGUAGE = os.environ['LANGUAGE'] if os.environ.get('LANGUAGE') else config_json['language']
+        self.LANGUAGE = self.get_config('LANGUAGE')
 
         # Cookie configs
         # Cookie from https://bbs.mihoyo.com/ys/
-        self.COOKIE_MIHOYOBBS = os.environ['COOKIE_MIHOYOBBS'] if os.environ.get('COOKIE_MIHOYOBBS') else config_json['cookies']['cookie_mihoyobbs']
-        self.COOKIE_MIYOUBI = os.environ['COOKIE_MIYOUBI'] if os.environ.get('COOKIE_MIYOUBI') else config_json['cookies']['cookie_miyoubi']
+        self.COOKIE_MIHOYOBBS = self.get_config('COOKIE_MIHOYOBBS')
+        self.COOKIE_MIYOUBI = self.get_config('COOKIE_MIYOUBI')
 
-        # Cookie from https://www.hoyolab.com/genshin/
-        self.COOKIE_HOYOLAB = os.environ['COOKIE_HOYOLAB'] if os.environ.get('COOKIE_HOYOLAB') else config_json['cookies']['cookie_hoyolab']
+        # Cookie from https://webstatic-sea.mihoyo.com/ys/event/signin-sea/index.html?act_id=e202102251931481&lang=en-us
+        self.COOKIE_HOYOLAB = self.get_config('COOKIE_HOYOLAB')
+
+        # Parameters from Sina Weibo intl. app.   aid=xxx; gsid=xxx; s=xxx
+        self.COOKIE_WEIBO = self.get_config('COOKIE_WEIBO')
 
         # Cookie from https://m.weibo.cn
-        self.COOKIE_WEIBO = os.environ['COOKIE_WEIBO'] if os.environ.get('COOKIE_WEIBO') else config_json['cookies']['cookie_weibo']
-        self.WEIBO_INTL_AID = os.environ['WEIBO_INTL_AID'] if os.environ.get('WEIBO_INTL_AID') else config_json['cookies']['weibo_intl_aid']
-        self.WEIBO_INTL_S = os.environ['WEIBO_INTL_S'] if os.environ.get('WEIBO_INTL_S') else config_json['cookies']['weibo_intl_s']
-
-        # Cookie from https://ka.sina.com.cn
-        self.COOKIE_KA = os.environ['COOKIE_KA'] if os.environ.get('COOKIE_KA') else config_json['cookies']['cookie_ka']
+        self.COOKIE_KA = self.get_config('COOKIE_KA')
 
         # Notifier configs
         # iOS Bark App
-        self.BARK_KEY = config_json['notifiers']['bark_key']
+        self.BARK_KEY = self.config_json.get('BARK_KEY')
         if os.environ.get('BARK_KEY'):
             # Customed server
             if os.environ['BARK_KEY'].find(
@@ -58,47 +56,50 @@ class Config(object):
         elif self.BARK_KEY and self.BARK_KEY.find('https') == -1 and self.BARK_KEY.find('http') == -1:
             self.BARK_KEY = f'https://api.day.app/{self.BARK_KEY}'
 
-        self.BARK_SOUND = os.environ['BARK_SOUND'] if os.environ.get('BARK_SOUND') else config_json['notifiers'][
-            'bark_sound']
+        self.BARK_SOUND = self.get_config('BARK_SOUND')
 
         # Cool Push
-        self.COOL_PUSH_SKEY = os.environ['COOL_PUSH_SKEY'] if os.environ.get('COOL_PUSH_SKEY') else config_json['notifiers']['cool_push_skey']
-        self.COOL_PUSH_MODE = os.environ['COOL_PUSH_MODE'] if os.environ.get('COOL_PUSH_MODE') else config_json['notifiers']['cool_push_mode']
+        self.COOL_PUSH_SKEY = self.get_config('COOL_PUSH_SKEY')
+        self.COOL_PUSH_MODE = self.get_config('COOL_PUSH_MODE')
 
         # Custom Notifier Config
-        self.CUSTOM_NOTIFIER = os.environ['CUSTOM_NOTIFIER'] if os.environ.get('CUSTOM_NOTIFIER') else config_json['notifiers']['custom_notifier']
+        self.CUSTOM_NOTIFIER = self.get_config('CUSTOM_NOTIFIER')
 
         # DingTalk Bot
-        self.DD_BOT_TOKEN = os.environ['DD_BOT_TOKEN'] if os.environ.get('DD_BOT_TOKEN') else config_json['notifiers']['dingtalk_bot_token']
-        self.DD_BOT_SECRET = os.environ['DD_BOT_SECRET'] if os.environ.get('DD_BOT_SECRET') else config_json['notifiers']['dingtalk_bot_secret']
+        self.DD_BOT_TOKEN = self.get_config('DD_BOT_TOKEN')
+        self.DD_BOT_SECRET = self.get_config('DD_BOT_SECRET')
 
         # Discord webhook
-        self.DISCORD_WEBHOOK = os.environ['DISCORD_WEBHOOK'] if os.environ.get('DISCORD_WEBHOOK') else config_json['notifiers']['discord_webhook']
+        self.DISCORD_WEBHOOK = self.get_config('DISCORD_WEBHOOK')
 
         # iGot
-        self.IGOT_KEY = os.environ['IGOT_KEY'] if os.environ.get('IGOT_KEY') else config_json['notifiers']['igot_key']
+        self.IGOT_KEY = self.get_config('IGOT_KEY')
 
         # pushplus
-        self.PUSH_PLUS_TOKEN = os.environ['PUSH_PLUS_TOKEN'] if os.environ.get('PUSH_PLUS_TOKEN') else config_json['notifiers']['push_plus_token']
-        self.PUSH_PLUS_USER = os.environ['PUSH_PLUS_USER'] if os.environ.get('PUSH_PLUS_USER') else config_json['notifiers']['push_plus_user']
+        self.PUSH_PLUS_TOKEN = self.get_config('PUSH_PLUS_TOKEN')
+        self.PUSH_PLUS_USER = self.get_config('PUSH_PLUS_USER')
 
         # Server Chan
-        self.SCKEY = os.environ['SCKEY'] if os.environ.get('SCKEY') else config_json['notifiers']['server_chan_key']
-        self.SCTKEY = os.environ['SCTKEY'] if os.environ.get('SCTKEY') else config_json['notifiers']['server_chan_turbo_key']
+        self.SCKEY = self.get_config('SCKEY')
+        self.SCTKEY = self.get_config('SCTKEY')
 
         # Telegram Bot
-        self.TG_BOT_API = os.environ['TG_BOT_API'] if os.environ.get('TG_BOT_API') else config_json['notifiers']['telegram_bot_api']
-        self.TG_BOT_TOKEN = os.environ['TG_BOT_TOKEN'] if os.environ.get('TG_BOT_TOKEN') else config_json['notifiers']['telegram_bot_token']
-        self.TG_USER_ID = os.environ['TG_USER_ID'] if os.environ.get('TG_USER_ID') else config_json['notifiers']['telegram_user_id']
+        self.TG_BOT_API = self.get_config('TG_BOT_API')
+        self.TG_BOT_TOKEN = self.get_config('TG_BOT_TOKEN')
+        self.TG_USER_ID = self.get_config('TG_USER_ID')
 
         # WeChat Work App
-        self.WW_ID = os.environ['WW_ID'] if os.environ.get('WW_ID') else config_json['notifiers']['wechat_work_id']
-        self.WW_APP_SECRET = os.environ['WW_APP_SECRET'] if os.environ.get('WW_APP_SECRET') else config_json['notifiers']['wechat_work_app_secret']
-        self.WW_APP_USERID = os.environ['WW_APP_USERID'] if os.environ.get('WW_APP_USERID') else config_json['notifiers']['wechat_work_app_userid']
-        self.WW_APP_AGENTID = os.environ['WW_APP_AGENTID'] if os.environ.get('WW_APP_AGENTID') else config_json['notifiers']['wechat_work_app_agentid']
+        self.WW_ID = self.get_config('WW_ID')
+        self.WW_APP_SECRET = self.get_config('WW_APP_SECRET')
+        self.WW_APP_USERID = self.get_config('WW_APP_USERID')
+        self.WW_APP_AGENTID = self.get_config('WW_APP_AGENTID')
 
         # WeChat Work Bot
-        self.WW_BOT_KEY = os.environ['WW_BOT_KEY'] if os.environ.get('WW_BOT_KEY') else config_json['notifiers']['wechat_work_bot_key']
+        self.WW_BOT_KEY = self.get_config('WW_BOT_KEY')
+
+    def get_config(self, name: str):
+        value = os.environ[name] if os.environ.get(name) else self.config_json.get(name, '')
+        return value
 
 
 config = Config()

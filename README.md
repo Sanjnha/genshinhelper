@@ -30,16 +30,16 @@ English | [简体中文](https://www.yindan.me/tutorial/genshin-impact-helper.ht
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
-	* [Docker](#docker)
-	* [PyPI Package](#pypi-package)
-	* [Serverless](#serverless)
-		+ [Tencent Cloud SCF](#tencent-cloud-scf)
-		+ [Alibaba Cloud FC](#alibaba-cloud-fc)
+    * [Docker](#docker)
+    * [PyPI Package](#pypi-package)
+    * [Serverless](#serverless)
+        + [Tencent Cloud SCF](#tencent-cloud-scf)
+        + [Alibaba Cloud FC](#alibaba-cloud-fc)
         + [AWS Lambda](#aws-lambda)
 - [Configuration](#configuration)
-	* [Environment Variables](#environment-variables)
-	* [Configuration file](#configuration-file)
-	* [Multiple accounts](#multiple-accounts)
+    * [Environment Variables](#environment-variables)
+    * [Configuration file](#configuration-file)
+    * [Multiple accounts](#multiple-accounts)
 - [Contributing](#contributing)
 - [Help and Support](#help-and-support)
 - [Acknowledgements](#acknowledgements)
@@ -165,7 +165,8 @@ You need to download the latest `genshinhelper-xxx-serverless.zip` serverless zi
 
 [International](https://intl.cloud.tencent.com/product/scf) | [中国站](https://cloud.tencent.com/product/scf)
 
-- Go to [云函数 SCF 管理控制台](https://console.cloud.tencent.com/scf/) → `函数服务` → `新建` → `自定义创建` → `基础配置` → `本地上传zip包` → `上传` → `本地上传zip包` → Select the downloaded file `genshinhelper-xxx-serverless.zip` → `完成`
+- Go to [云函数 SCF 管理控制台](https://console.cloud.tencent.com/scf/) → `函数服务` → `新建` → `自定义创建` → `基础配置` → `本地上传zip包` → `上传` → `本地上传zip包` → Select the downloaded file `genshinhelper-xxx-serverless.zip`
+  → `完成`
 
 ![SCF_upload](https://i.loli.net/2021/04/27/2gHPKxcsqbwhMTN.png)
 
@@ -187,7 +188,8 @@ You need to download the latest `genshinhelper-xxx-serverless.zip` serverless zi
 
 [International](https://www.alibabacloud.com/zh/product/function-compute) | [中国站](https://cn.aliyun.com/product/fc)
 
- - Go to [函数计算 FC 管理控制台](https://fc.console.aliyun.com/fc/) → `新建函数` → `事件函数` → `代码包上传` → `上传代码` → Select the downloaded file `genshinhelper-xxx-serverless.zip` → Configure as shown below. Note that the entry point is `index.main_handler` → `新建`
+- Go to [函数计算 FC 管理控制台](https://fc.console.aliyun.com/fc/) → `新建函数` → `事件函数` → `代码包上传` → `上传代码` → Select the downloaded file `genshinhelper-xxx-serverless.zip` → Configure as shown below. Note that
+  the entry point is `index.main_handler` → `新建`
 
 ![FC_upload](https://i.loli.net/2021/04/27/NyW1EGML4cHgo6Z.png)
 
@@ -213,7 +215,7 @@ You need to download the latest `genshinhelper-xxx-serverless.zip` serverless zi
 
 - Click `All services` → `Lambda`
 - In the left, `Functions` → `Create function`
--  Choose `Author from scratch` / Function name: *yourAwesomeFunctionName* / **Runtime: Python 3.8** → `Create function`
+- Choose `Author from scratch` / Function name: *yourAwesomeFunctionName* / **Runtime: Python 3.8** → `Create function`
 
 ![Lambda_Create_Function](https://i.loli.net/2021/05/26/rGQVH8usTtIO6S1.png)
 
@@ -250,38 +252,36 @@ The following table lists all the environment variables used in this project:
 <details>
 <summary>Click here</summary>
 
-| **Variable Name** | **Required** | **The name in the config.json** | **Default**        | **Website**                                           | **Description**                                                                             |
-|-------------------|--------------|---------------------------------|--------------------|-------------------------------------------------------|---------------------------------------------------------------------------------------------|
-| LANGUAGE          | ❌            | language                        | en-us              |                                                       | Rewards language for HoYoLAB daily check-in.                                                |
-| COOKIE_MIHOYOBBS  | ❌            | cookie_mihoyobbs                |                    | https://bbs.mihoyo.com/ys/                            | Cookie from miHoYo bbs.                                                                     |
-| COOKIE_MIYOUBI  | ❌            | cookie_miyoubi                  |                    | https://bbs.mihoyo.com/ys/                            | Cookie from miHoYo bbs.                                                                     |
-| COOKIE_HOYOLAB    | ❌            | cookie_hoyolab                  |                    | https://www.hoyolab.com/genshin/                      | Cookie from HoYoLAB community.                                                              |
-| COOKIE_WEIBO      | ❌            | cookie_weibo                    |                    | https://m.weibo.cn/                                   | Cookie from Weibo intl app. Cookie from https://m.weibo.cn might work.                      |
-| WEIBO_INTL_AID    | ❌            | weibo_intl_aid                  |                    |                                                       | Weibo intl app's aid-parameters.                                                            |
-| WEIBO_INTL_S      | ❌            | weibo_intl_s                    |                    |                                                       | Weibo intl app's s-parameters.                                                              |
-| COOKIE_KA         | ❌            | cookie_ka                       |                    | https://ka.sina.com.cn/                               | Cookie from https://ka.sina.com.cn/                                                         |
-| BARK_KEY          | ❌            | bark_key                        |                    |                                                       | iOS Bark app's IP or device code. For example: https://api.day.app/xxxxxx                   |
-| BARK_SOUND        | ❌            | bark_sound                      | healthnotification |                                                       | iOS Bark app's notification sound. Default: healthnotification                              |
-| COOL_PUSH_SKEY    | ❌            | cool_push_skey                  |                    | https://cp.xuthus.cc/                                 | SKEY for Cool Push.                                                                         |
-| COOL_PUSH_MODE    | ❌            | cool_push_mode                  | send               |                                                       | Push method for Cool Push. Choose from send(私聊),group(群组),wx(微信). Default: send          |
-| CRON_SIGNIN       | ❌            |                                 | 0 6 * * *          |                                                       | Docker custom runtime                                                                       |
-| CUSTOM_NOTIFIER   | ❌            | custom_notifier                 |                    |                                                       | Custom notifier configuration                                                               |
-| DD_BOT_TOKEN      | ❌            | dingtalk_bot_token              |                    |                                                       | 钉钉机器人WebHook地址中access_token后的字段.                                                     |
-| DD_BOT_SECRET     | ❌            | dingtalk_bot_secret             |                    |                                                       | 钉钉加签密钥.在机器人安全设置页面,加签一栏下面显示的以SEC开头的字符串.                                   |
-| DISCORD_WEBHOOK   | ❌            | discord_webhook                 |                    |                                                       | Webhook of Discord.                                                                         |
-| IGOT_KEY          | ❌            | igot_key                        |                    |                                                       | KEY for iGot. For example: https://push.hellyw.com/xxxxxx                                   |
-| PUSH_PLUS_TOKEN   | ❌            | push_plus_token                 | 一对一推送           | https://www.pushplus.plus/doc/                        | pushplus 一对一推送或一对多推送的token.不配置push_plus_user则默认为一对一推送.                        |
-| PUSH_PLUS_USER    | ❌            | push_plus_user                  |                    |                                                       | pushplus 一对多推送的群组编码.在'一对多推送'->'您的群组'(如无则新建)->'群组编码'里查看,如果是创建群组人,也需点击'查看二维码'扫描绑定,否则不能接收群组消息. |
-| SCKEY             | ❌            | server_chan_key                 |                    | https://sc.ftqq.com/3.version/                        | SCKEY for ServerChan.                                                                       |
-| SCTKEY            | ❌            | server_chan_turbo_key           |                    | https://sct.ftqq.com/                                 | SENDKEY for ServerChanTurbo.                                                                |
-| TG_BOT_API        | ❌            | telegram_bot_api                | api.telegram.org   |                                                       | Telegram robot api address. Default: api.telegram.org                                       |
-| TG_BOT_TOKEN      | ❌            | telegram_bot_token              |                    |                                                       | Telegram robot token. Generated when requesting a bot from @botfather                       |
-| TG_USER_ID        | ❌            | telegram_user_id                |                    |                                                       | User ID of the Telegram push target.                                                        |
-| WW_ID             | ❌            | wechat_work_id                  |                    | https://work.weixin.qq.com/api/doc/90000/90135/90236  | 企业微信的企业ID(corpid).在'管理后台'->'我的企业'->'企业信息'里查看.                                  |
-| WW_APP_SECRET     | ❌            | wechat_work_app_secret          |                    |                                                       | 企业微信应用的secret.在'管理后台'->'应用与小程序'->'应用'->'自建',点进某应用里查看.                      |
-| WW_APP_USERID     | ❌            | wechat_work_app_userid          | @all               |                                                       | 企业微信应用推送对象的用户ID.在'管理后台'->' 通讯录',点进某用户的详情页里查看.默认: @all                   |
-| WW_APP_AGENTID    | ❌            | wechat_work_app_agentid         |                    |                                                       | 企业微信应用的agentid.在'管理后台'->'应用与小程序'->'应用',点进某应用里查看.                            |
-| WW_BOT_KEY        | ❌            | wechat_work_bot_key             |                    | https://work.weixin.qq.com/api/doc/90000/90136/91770  | 企业微信机器人WebHook地址中key后的字段.                                                           |
+| **Variable Name** | **Required** | **Default**        | **Description**                                                                                                                   |
+|-------------------|:------------:|:------------------:|-----------------------------------------------------------------------------------------------------------------------------------|
+| LANGUAGE          | ❌            | en-us              | Rewards language for HoYoLAB daily check-in.                                                                                      |
+| COOKIE_MIHOYOBBS  | ❌            |                    | Cookie from miHoYo bbs. https://bbs.mihoyo.com/ys/                                                                                |
+| COOKIE_MIYOUBI    | ❌            |                    | Cookie from miHoYo bbs. https://bbs.mihoyo.com/ys/                                                                                |
+| COOKIE_HOYOLAB    | ❌            |                    | Cookie from HoYoLAB community. https://webstatic-sea.mihoyo.com/ys/event/signin-sea/index.html?act_id=e202102251931481&lang=en-us |
+| COOKIE_WEIBO      | ❌            |                    | Cookie from Weibo intl app.                                                                                                       |
+| COOKIE_KA         | ❌            |                    | Cookie from https://ka.sina.com.cn/                                                                                               |
+| BARK_KEY          | ❌            |                    | iOS Bark app's IP or device code. For example: https://api.day.app/xxxxxx                                                         |
+| BARK_SOUND        | ❌            | healthnotification | iOS Bark app's notification sound. Default: healthnotification                                                                    |
+| COOL_PUSH_SKEY    | ❌            |                    | SKEY for Cool Push. https://cp.xuthus.cc/                                                                                         |
+| COOL_PUSH_MODE    | ❌            | send               | Push method for Cool Push. Choose from send(私聊),group(群组),wx(微信). Default: send                                                |
+| CRON_SIGNIN       | ❌            | 0 6 * * *          | Docker custom runtime                                                                                                             |
+| CUSTOM_NOTIFIER   | ❌            |                    | Custom notifier configuration                                                                                                     |
+| DD_BOT_TOKEN      | ❌            |                    | 钉钉机器人WebHook地址中access_token后的字段.                                                                                           |
+| DD_BOT_SECRET     | ❌            |                    | 钉钉加签密钥.在机器人安全设置页面,加签一栏下面显示的以SEC开头的字符串.                                                                         |
+| DISCORD_WEBHOOK   | ❌            |                    | Webhook of Discord.                                                                                                               |
+| IGOT_KEY          | ❌            |                    | KEY for iGot. For example: https://push.hellyw.com/xxxxxx                                                                         |
+| PUSH_PLUS_TOKEN   | ❌            | 一对一推送              | pushplus 一对一推送或一对多推送的token.不配置push_plus_user则默认为一对一推送. https://www.pushplus.plus/doc/                            |
+| PUSH_PLUS_USER    | ❌            |                    | pushplus 一对多推送的群组编码.在'一对多推送'->'您的群组'(如无则新建)->'群组编码'里查看,如果是创建群组人,也需点击'查看二维码'扫描绑定,否则不能接收群组消息.  |
+| SCKEY             | ❌            |                    | SCKEY for ServerChan. https://sc.ftqq.com/3.version/                                                                              |
+| SCTKEY            | ❌            |                    | SENDKEY for ServerChanTurbo. https://sct.ftqq.com/                                                                                |
+| TG_BOT_API        | ❌            | api.telegram.org   | Telegram robot api address. Default: api.telegram.org                                                                             |
+| TG_BOT_TOKEN      | ❌            |                    | Telegram robot token. Generated when requesting a bot from @botfather                                                             |
+| TG_USER_ID        | ❌            |                    | User ID of the Telegram push target.                                                                                              |
+| WW_ID             | ❌            |                    | 企业微信的企业ID(corpid).在'管理后台'->'我的企业'->'企业信息'里查看. https://work.weixin.qq.com/api/doc/90000/90135/90236                   |
+| WW_APP_SECRET     | ❌            |                    | 企业微信应用的secret.在'管理后台'->'应用与小程序'->'应用'->'自建',点进某应用里查看.                                                            |
+| WW_APP_USERID     | ❌            | @all               | 企业微信应用推送对象的用户ID.在'管理后台'->' 通讯录',点进某用户的详情页里查看.默认: @all                                                         |
+| WW_APP_AGENTID    | ❌            |                    | 企业微信应用的agentid.在'管理后台'->'应用与小程序'->'应用',点进某应用里查看.                                                                  |
+| WW_BOT_KEY        | ❌            |                    | 企业微信机器人WebHook地址中key后的字段. https://work.weixin.qq.com/api/doc/90000/90136/91770                                            |
 
 </details>
 
@@ -296,52 +296,45 @@ A `config.example.json` in JSON like below:
 
 ```json
 {
-    "language":"en-us",
-    "cookies":{
-        "cookie_mihoyobbs":"",
-        "cookie_miyoubi":"",
-        "cookie_hoyolab":"",
-        "cookie_weibo":"",
-        "weibo_intl_aid":"",
-        "weibo_intl_s":"",
-        "cookie_ka":""
+  "LANGUAGE": "en-us",
+  "COOKIE_MIHOYOBBS": "",
+  "COOKIE_MIYOUBI": "",
+  "COOKIE_HOYOLAB": "",
+  "COOKIE_WEIBO": "",
+  "COOKIE_KA": "",
+  "BARK_KEY": "",
+  "BARK_SOUND": "healthnotification",
+  "COOL_PUSH_SKEY": "",
+  "COOL_PUSH_MODE": "send",
+  "CUSTOM_NOTIFIER": {
+    "method": "post",
+    "url": "",
+    "data": {
     },
-    "notifiers":{
-        "bark_key":"",
-        "bark_sound":"healthnotification",
-        "cool_push_skey":"",
-        "cool_push_mode":"send",
-        "custom_notifier":{
-            "method":"post",
-            "url":"",
-            "data":{
-
-            },
-            "retcode_key":"",
-            "retcode_value":200,
-            "data_type":"data",
-            "merge_title_and_desp":false,
-            "set_data_title":"",
-            "set_data_sub_title":"",
-            "set_data_desp":""
-        },
-        "dingtalk_bot_token":"",
-        "dingtalk_bot_secret":"",
-        "discord_webhook":"",
-        "igot_key":"",
-        "push_plus_token":"",
-        "push_plus_user":"",
-        "server_chan_key":"",
-        "server_chan_turbo_key":"",
-        "telegram_bot_api":"api.telegram.org",
-        "telegram_bot_token":"",
-        "telegram_user_id":"",
-        "wechat_work_id":"",
-        "wechat_work_app_secret":"",
-        "wechat_work_app_userid":"@all",
-        "wechat_work_app_agentid":"",
-        "wechat_work_bot_key":""
-    }
+    "retcode_key": "",
+    "retcode_value": 200,
+    "data_type": "data",
+    "merge_title_and_desp": false,
+    "set_data_title": "",
+    "set_data_sub_title": "",
+    "set_data_desp": ""
+  },
+  "DD_BOT_TOKEN": "",
+  "DD_BOT_SECRET": "",
+  "DISCORD_WEBHOOK": "",
+  "IGOT_KEY": "",
+  "PUSH_PLUS_TOKEN": "",
+  "PUSH_PLUS_USER": "",
+  "SCKEY": "",
+  "SCTKEY": "",
+  "TG_BOT_API": "api.telegram.org",
+  "TG_BOT_TOKEN": "",
+  "TG_USER_ID": "",
+  "WW_ID": "",
+  "WW_APP_SECRET": "",
+  "WW_APP_USERID": "@all",
+  "WW_APP_AGENTID": "",
+  "WW_BOT_KEY": ""
 }
 ```
 
@@ -359,8 +352,8 @@ Feel free to dive in! Open an [issue](https://github.com/y1ndan/genshinhelper/is
 
 Please join our chat groups for help and support.
 
-[QQ Group](https://qm.qq.com/cgi-bin/qm/qr?k=_M9lYFxkYD7yQQR2btyG3pkZWFys_I-l) | 
-[Discord](https://discord.gg/p28845gGfv) | 
+[QQ Group](https://qm.qq.com/cgi-bin/qm/qr?k=_M9lYFxkYD7yQQR2btyG3pkZWFys_I-l) |
+[Discord](https://discord.gg/p28845gGfv) |
 [Telegram](https://t.me/genshinhelper)
 
 ## Acknowledgements
