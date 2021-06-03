@@ -94,7 +94,7 @@ def main():
         notifiers.send2all(
             status=f' ✔ {success_count} · ✖ {failure_count}', desp=message_box)
     except Exception as e:
-        log.error(e)
+        log.exception(e)
 
     if exitcode != 0:
         log.error(f'Process finished with exit code {exitcode}')

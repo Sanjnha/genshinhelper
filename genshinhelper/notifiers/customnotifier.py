@@ -1,5 +1,3 @@
-import json
-
 from .basenotifier import BaseNotifier as Base
 from ..config import config 
 
@@ -7,12 +5,11 @@ from ..config import config
 class CustomNotifier(Base):
     def __init__(self):
         self.name = 'Custom Notifier'
-        self.conf = config.CUSTOM_NOTIFIER if isinstance(config.CUSTOM_NOTIFIER, dict) else json.loads(config.CUSTOM_NOTIFIER)
-        self.url = self.conf['url']
-        self.data = self.conf['data']
-        self.token = self.conf['data']
-        self.retcode_key = self.conf['retcode_key']
-        self.retcode_value = self.conf['retcode_value']
+        self.conf = config.CUSTOM_NOTIFIER if config.CUSTOM_NOTIFIER else {}
+        self.token = self.url = self.conf.get('url')
+        self.data = self.conf.get('data')
+        self.retcode_key = self.conf.get('retcode_key')
+        self.retcode_value = self.conf.get('retcode_value')
 
     def send(self, text=Base.app, status=Base.status, desp=Base.desp):
         if not self.token:
