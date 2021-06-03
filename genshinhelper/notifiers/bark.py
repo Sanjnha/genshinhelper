@@ -12,6 +12,10 @@ class Bark(Base):
         self.retcode_value = 200
 
     def send(self, text=Base.app, status=Base.status, desp=Base.desp):
-        url = f'{config.BARK_KEY}/{text} {status}/{parse.quote(str(desp))}'
-        data = {'sound': config.BARK_SOUND}
-        return self.push('get', url, params=data)
+        url = config.BARK_KEY
+        data = {
+            'title': f'{text} {status}',
+            'body': desp,
+            'sound': config.BARK_SOUND
+        }
+        return self.push('post', url, data=data)
