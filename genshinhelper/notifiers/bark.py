@@ -1,5 +1,3 @@
-from urllib import parse
-
 from .basenotifier import BaseNotifier as Base
 from ..config import config
 
