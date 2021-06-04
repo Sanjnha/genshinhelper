@@ -27,11 +27,11 @@ class SuperTopicCheckin(object):
         url = self.FOLLOW_DATA_URL
         data = {
             'containerid': '100803_-_followsuper',
-            'aid': extract_cookie('aid', self._cookie),
             'c': 'weicoabroad',
-            'gsid': extract_cookie('gsid', self._cookie),
             's': extract_cookie('s', self._cookie),
-            'ua': 'iPhone12%2C1_iOS14.0.1_Weibo_intl_4140_cell'
+            'gsid': extract_cookie('gsid', self._cookie),
+            'aid': extract_cookie('aid', self._cookie),   # ios
+            'from': extract_cookie('from', self._cookie)  # android
         }
         # turn off certificate verification
         response = request('get', url, params=data, headers=self.headers, verify=False).json()
