@@ -11,92 +11,94 @@ banner = """
 ░█░▀▄░█▀▀░█░▒█░▀▀▄░█▀▀█░░█▀░█░▒█░█▀▀█░█▀▀░█░░█▄▄█░█▀▀░█▄▄▀
 ░▀▀▀▀░▀▀▀░▀░░▀░▀▀▀░▀░░▀░▀▀▀░▀░░▀░▀░░▀░▀▀▀░▀▀░█░░░░▀▀▀░▀░▀▀
 """
-message_box = []
-exitcode = 0
+exit_code = 0
+tasks = {
+    'mihoyo': [
+        '原神签到福利',
+        get_cookies(config.COOKIE_MIHOYOBBS),
+        YuanshenCheckin
+    ],
+    'miyoubi': [
+        '米游币签到姬',
+        get_cookies(config.COOKIE_MIYOUBI),
+        MiyoubiCheckin
+    ],
+    'hoyolab': [
+        'HoYoLAB Community',
+        get_cookies(config.COOKIE_HOYOLAB),
+        GenshinCheckin
+    ],
+    'weibo': [
+        '微博超话签到',
+        get_cookies(config.COOKIE_WEIBO),
+        SuperTopicCheckin
+    ],
+    'ka': [
+        '原神超话监测',
+        get_cookies(config.COOKIE_KA),
+        RedemptionCode
+    ]
+}
 
 
 def __run_sign(name, cookies, func):
     success_count = 0
     failure_count = 0
     if not cookies:
-        return success_count, failure_count
-
-    global message_box, exitcode
+        return [success_count, failure_count]
 
     account_count = len(cookies)
-    account = 'account' if account_count == 1 else 'accounts'
-
-    log.info(f'You have {account_count} 「{name}」 {account} configured.')
-    message = []
+    account_str = 'account' if account_count == 1 else 'accounts'
+    log.info(f'You have {account_count} 「{name}」 {account_str} configured.')
+    global exit_code
+    result_list = []
     for i, cookie in enumerate(cookies, start=1):
         log.info(f'Preparing to perform tasks for account {i}...')
         try:
-            result = func(cookie).run()
-            result = f'👻 No.{i}:\n    {result}\n'
-            message.append(result)
+            e = func(cookie).run()
             success_count += 1
         except Exception as e:
             log.exception('TRACEBACK')
-            result = f'👻 No.{i}:\n    {e}\n'
-            message.append(result)
             failure_count += 1
-            exitcode = -1
+            exit_code = -1
+        finally:
+            result = f'🌈 No.{i}:\n    {e}\n'
+            result_list.append(result)
         continue
 
-    message_box.append(f'〓{name}〓')
-    message_box.append(f'🔰 ✔ {success_count} · ✖ {failure_count}')
-    message_box.append((''.join(message)))
-
-    return success_count, failure_count
+    message_box = [
+        success_count,
+        failure_count,
+        f'🏆 {name}',
+        f'☁️ ✔ {success_count} · ✖ {failure_count}',
+        ''.join(result_list)
+    ]
+    return message_box
 
 
 def main():
-    print(banner)
+    log.info(banner)
     log.info(f'🌀 genshinhelper v{__version__}')
-    log.info('Running process...')
+    log.info('Starting running...')
+    result = {i[0]: __run_sign(i[1][0], i[1][1], i[1][2]) for i in tasks.items()}
+    total_success = sum([i[0] for i in result.values()])
+    total_failure = sum([i[1] for i in result.values()])
+    message = sum([i[2::] for i in result.values()], [])
+    tip = 'WARNING: Please configure environment variables or config.json file first!\n'
+    message_box = '\n'.join(message) if message else tip
 
-    global message_box
-    message_box = []
+    log.info('RESULT:\n' + message_box)
+    # The ``` is added to use markdown code block
+    markdown_message = f'```\n{message_box}```'
+    if message_box != tip:
+        try:
+            notifiers.send2all(
+                status=f' ✔ {total_success} · ✖ {total_failure}', desp=markdown_message)
+        except Exception as e:
+            log.exception('TRACEBACK')
 
-    # Use markdown code block
-    message_box.append('```')
-
-    # miHoYo bbs
-    mys_cookies = get_cookies(config.COOKIE_MIHOYOBBS)
-    mys_success_count, mys_failure_count = __run_sign('米游社原神签到', mys_cookies, YuanshenCheckin)
-
-    # Miyoubi
-    myb_cookies = get_cookies(config.COOKIE_MIYOUBI)
-    myb_success_count, myb_failure_count = __run_sign('米游社米游币签到', myb_cookies, MiyoubiCheckin)
-
-    # HoYoLAB Community
-    lab_cookies = get_cookies(config.COOKIE_HOYOLAB)
-    lab_success_count, lab_failure_count = __run_sign('HoYoLAB Community', lab_cookies, GenshinCheckin)
-
-    # Weibo Super Topic
-    wb_cookies = get_cookies(config.COOKIE_WEIBO)
-    wb_success_count, wb_failure_count = __run_sign('微博超话签到', wb_cookies, SuperTopicCheckin)
-
-    # ka.sina.com.cn
-    ka_cookies = get_cookies(config.COOKIE_KA)
-    ka_success_count, ka_failure_count = __run_sign('微博原神兑换码', ka_cookies, RedemptionCode)
-
-    message_box.append('```')
-    message_box = '\n'.join(message_box)
-
-    success_count = mys_success_count + myb_success_count + lab_success_count + wb_success_count + ka_success_count
-    failure_count = mys_failure_count + myb_failure_count + lab_failure_count + wb_failure_count + ka_failure_count
-
-    # Remove '```' and print result to console
-    log.info('RESULT:' + message_box.split('```')[1])
-
-    try:
-        notifiers.send2all(
-            status=f' ✔ {success_count} · ✖ {failure_count}', desp=message_box)
-    except Exception as e:
-        log.exception('TRACEBACK')
-
-    if exitcode != 0:
-        log.error(f'Process finished with exit code {exitcode}')
-        exit(exitcode)
+    if exit_code != 0:
+        log.error(f'Process finished with exit code {exit_code}')
+        exit(exit_code)
     log.info('End of process run')
+
