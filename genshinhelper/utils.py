@@ -101,4 +101,5 @@ MESSAGE_TEMPLATE = '''
     今日奖励: {award_name} × {award_cnt}
     本月累签: {total_sign_day} 天
     签到结果: {status}
+    {travel_notes}
     {end:#^18}'''

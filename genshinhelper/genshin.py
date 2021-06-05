@@ -9,6 +9,7 @@ import time
 import uuid
 from functools import wraps
 
+from . import journal
 from .config import config
 from .exceptions import CookiesExpired
 from .utils import MESSAGE_TEMPLATE, log, request, get_ds
@@ -41,6 +42,7 @@ def _data_handler(func):
                         'uid': uid
                     }
                     self._sign_data.update({
+                        'region': region,
                         'region_name': region_name,
                         'uid': uid,
                         'post_data': post_data
@@ -113,12 +115,19 @@ class __BaseCheckin(object):
         uid = self._sign_data.get('uid', 123456789)
         hidden_uid = str(uid).replace(str(uid)[3:-3], '***', 1)
         data = self._sign_data.get('post_data', {})
+        region = self._sign_data.get('region')
+        if region in ['cn_gf01', 'cn_qd01']:
+            ledger = journal.get_ledger(self._cookie, uid, region)
+            travel_notes = '''旅行者 {month} 月札记
+    💠原石: {month_primogems}
+    🌕摩拉: {month_mora}'''.format(**ledger)
 
         message = {
             'today': today,
             'region_name': region_name,
             'uid': hidden_uid,
             'total_sign_day': total_sign_day,
+            'travel_notes': travel_notes,
             'end': ''
         }
 
