@@ -55,14 +55,15 @@ def __run_sign(name, cookies, func):
     for i, cookie in enumerate(cookies, start=1):
         log.info(f'Preparing to perform tasks for account {i}...')
         try:
-            e = func(cookie).run()
+            result = func(cookie).run()
             success_count += 1
         except Exception as e:
+            result = e
             log.exception('TRACEBACK')
             failure_count += 1
             exit_code = -1
         finally:
-            result = f'🌈 No.{i}:\n    {e}\n'
+            result = f'🌈 No.{i}:\n    {result}\n'
             result_list.append(result)
         continue
 
