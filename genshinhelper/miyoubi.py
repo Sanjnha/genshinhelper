@@ -27,6 +27,7 @@ def get_app_cookie(cookie):
 
 
 class MiyoubiCheckin(object):
+    STATE_URL = 'https://bbs-api.mihoyo.com/apihub/sapi/getUserMissionsState'
     SIGN_URL = 'https://bbs-api.mihoyo.com/apihub/sapi/signIn?gids={}'
     POST_LIST_URL = 'https://bbs-api.mihoyo.com/post/api/getForumPostList?forum_id={}&is_good=false&is_hot=false&page_size=20&sort_type=1'
     POST_FULL_URL = 'https://bbs-api.mihoyo.com/post/api/getPostFull?post_id={}'
@@ -35,6 +36,7 @@ class MiyoubiCheckin(object):
 
     def __init__(self, cookie: str):
         self._cookie = get_app_cookie(cookie)
+        self.get_missions_state()
 
     def get_header(self):
         client_type, app_version, ds = get_ds('android')
@@ -52,8 +54,21 @@ class MiyoubiCheckin(object):
         }
         return header
 
+    def get_missions_state(self):
+        url = self.STATE_URL
+        response = request('get', url, headers=self.get_header()).json()
+        self.total_points = response.get('data', {}).get('total_points', -1)
+        states = response.get('data', {}).get('states', [])
+        self.missions_state = {
+            i['mission_key']: i['is_get_award'] for i in states if i['mission_id'] in (58, 59, 60, 61)
+        }
+        self.is_sign = self.missions_state.get('continuous_sign', False)
+        self.is_view = self.missions_state.get('view_post_0', False)
+        self.is_upvote = self.missions_state.get('post_up_0', False)
+        self.is_share = self.missions_state.get('share_post_0', False)
+
     def sign(self, id: int):
-        forums = { 1: '崩坏3', 2: '原神', 3: '崩坏2', 4: '未定事件簿', 5: '大别野' }
+        forums = {1: '崩坏3', 2: '原神', 3: '崩坏2', 4: '未定事件簿', 5: '大别野'}
         if id not in range(1, 6):
             raise ValueError('The value of id is one of 1, 2, 3, 4, 5')
 
@@ -134,18 +149,19 @@ class MiyoubiCheckin(object):
         def get_result(name, info):
             return f'{name} ({[i[0] for i in info].count(True)}/{len(info)})'
 
+        log.info(f'🌕 {self.total_points}')
         log.info('Preparing to get posts...')
         forum_id = 26
         posts = self.get_posts(forum_id)
 
         log.info('Preparing to check-in...')
-        sign = [self.sign(i) for i in range(1, 6)]
+        sign = [self.sign(i) for i in range(1, 6) if not self.is_sign]
         log.info('Preparing to view posts...')
-        view = [self.view_post(i) for i in random.sample(posts[0:5], 3)]
+        view = [self.view_post(i) for i in random.sample(posts[0:5], 3) if not self.is_view]
         log.info('Preparing to upvote posts...')
-        upvote = [self.upvote_post(i) for i in random.sample(posts[5:17], 10)]
+        upvote = [self.upvote_post(i) for i in random.sample(posts[5:17], 10) if not self.is_upvote]
         log.info('Preparing to share post...')
-        share = [self.share_post(i) for i in random.sample(posts[-3:-1], 1)]
+        share = [self.share_post(i) for i in random.sample(posts[-3:-1], 1) if not self.is_share]
 
         message_box = [
             get_result('签到', sign),
