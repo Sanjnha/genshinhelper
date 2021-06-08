@@ -5,6 +5,9 @@ import logging
 import random
 import string
 import time
+import gettext
+import os
+import locale
 
 import requests
 
@@ -15,6 +18,10 @@ logging.basicConfig(
 
 log = logger = logging
 
+
+_localedir = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'locales')
+_translate = gettext.translation('genshinhelper', _localedir, fallback=True)
+_ = _translate.gettext
 
 def request(method: str,
             url: str,
@@ -38,12 +45,18 @@ def request(method: str,
                 timeout=21,
                 **kwargs)
         except Exception as e:
-            log.error(f'Request failed: {url}\n{e}')
+            log.error(_('Request failed: {url}\n{e}').format(
+                url=url, e=e
+            ))
             if i == max_retries:
-                raise Exception(f'Request failed ({i + 1}/{total_requests}):\n{e}')
+                raise Exception(_('Request failed ({count}/{total_requests}):\n{e}').format(
+                    count=(i + 1), total_requests=total_requests, e=e
+                ))
 
             seconds = 5
-            log.info(f'Trying to reconnect in {seconds} seconds ({i + 1}/{max_retries})...')
+            log.info(_('Trying to reconnect in {seconds} seconds ({count}/{max_retries})...').format(
+                seconds=seconds, count=(i + 1), max_retries=max_retries,
+            ))
             time.sleep(seconds)
         else:
             return response
@@ -58,8 +71,12 @@ def get_cookies(cookies: str = None):
 
 def extract_cookie(name: str, cookie: str):
     if name not in cookie:
-        raise Exception('Failed to extract cookie: '
-            f'The cookie does not contain the `{name}` field.')
+        raise Exception(
+            _('Failed to extract cookie: ') + \
+            _('The cookie does not contain the `{name}` field.').format(
+                name=name
+            )
+        )
     extract_cookie = cookie.split(f'{name}=')[1].split(';')[0]
     return extract_cookie
 
@@ -95,11 +112,11 @@ def get_ds(type: str = None):
     return (client_type, app_version, ds)
 
 
-MESSAGE_TEMPLATE = '''
+MESSAGE_TEMPLATE = _('''
     {today:#^18}
     🔅[{region_name}]{uid}
     今日奖励: {award_name} × {award_cnt}
     本月累签: {total_sign_day} 天
     签到结果: {status}
     {travel_notes}
-    {end:#^18}'''
+    {end:#^18}''')

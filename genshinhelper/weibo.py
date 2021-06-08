@@ -135,7 +135,7 @@ class RedemptionCode(object):
 
         group = self.event_card[0].get('card_group', [{}])[0].get('group', [])
         ids = [i for item in group if '签到' in item.get('title_sub') for i in re.findall(
-            'gift/(\d*)', item['scheme'])]
+            r'gift/(\d*)', item['scheme'])]
         return ids
 
     @property

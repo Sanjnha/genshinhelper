@@ -1,4 +1,5 @@
 from pathlib import Path
+import subprocess
 
 from setuptools import find_packages, setup
 
@@ -8,6 +9,23 @@ long_description = Path('README.md').read_text(encoding='utf-8')
 def load_requirements(filename):
     with Path(filename).open() as f:
         return [line.strip() for line in f if not line.startswith('#')]
+
+
+def create_mo_files():
+    data_files = []
+    locale_dir = Path('genshinhelper/locales')
+    po_dirs = [lang / 'LC_MESSAGES' for lang in locale_dir.iterdir() if lang.is_dir()]
+    for dir in po_dirs:
+        mo_files = []
+        po_files = [file for file in dir.iterdir() if file.suffix == '.po']
+        for po_file in po_files:
+            mo_file = po_file.with_suffix('.mo')
+            msgfmt_cmd = ['msgfmt', po_file, '-o', mo_file]
+            subprocess.run(msgfmt_cmd)
+            mo_files.append(str(mo_file))
+        data_files.append((str(dir), mo_files))
+    return data_files
+
 
 
 __version__ = None
@@ -31,6 +49,7 @@ setup(
     long_description_content_type='text/markdown',
     keywords='原神 签到 mihoyo hoyolab genshin genshin-impact check-in weibo',
     include_package_data=True,
+    data_files=create_mo_files(),
     install_requires=load_requirements('requirements.txt'),
     tests_require=['pytest'],
     classifiers=[

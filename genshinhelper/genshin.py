@@ -12,7 +12,7 @@ from functools import wraps
 from . import journal
 from .config import config
 from .exceptions import CookiesExpired
-from .utils import MESSAGE_TEMPLATE, log, request, get_ds
+from .utils import MESSAGE_TEMPLATE, log, request, get_ds, _
 
 
 def _data_handler(func):
@@ -28,7 +28,9 @@ def _data_handler(func):
                 raise Exception(roles.get('message', 'Empty roles list'))
             if role_list:
                 result_list = []
-                log.info(f'当前账号绑定了 {len(role_list)} 个角色')
+                log.info(_('当前账号绑定了 {num_roles)} 个角色').format(
+                    num_roles=len(role_list)
+                    ))
                 for role in role_list:
                     # cn_gf01:  天空岛
                     # cn_qd01:  世界树
@@ -119,9 +121,9 @@ class __BaseCheckin(object):
         travel_notes = 'Olah! Odomu'
         if region in ['cn_gf01', 'cn_qd01']:
             ledger = journal.get_ledger(self._cookie, uid, region)
-            travel_notes = '''旅行者 {month} 月札记
+            travel_notes = _('''旅行者 {month} 月札记
     💠原石: {month_primogems}
-    🌕摩拉: {month_mora}'''.format(**ledger)
+    🌕摩拉: {month_mora}''').format(**ledger)
 
         message = {
             'today': today,
@@ -132,13 +134,15 @@ class __BaseCheckin(object):
             'end': ''
         }
 
-        log.info(f'准备为旅行者 {hidden_uid} 签到...')
+        log.info(_('准备为旅行者 {hidden_uid} 签到...').format(
+            hidden_uid=hidden_uid
+            ))
         time.sleep(5)
 
         if is_sign:
             message['award_name'] = awards[total_sign_day - 1].get('name')
             message['award_cnt'] = awards[total_sign_day - 1].get('cnt')
-            message['status'] = '👀 旅行者, 你已经签到过了哦'
+            message['status'] = _('👀 旅行者, 你已经签到过了哦')
 
             # return ''.join(self.message.format(**message))
             return self.message.format(**message)
@@ -146,7 +150,7 @@ class __BaseCheckin(object):
             message['award_name'] = awards[total_sign_day].get('name')
             message['award_cnt'] = awards[total_sign_day].get('cnt')
         if first_bind:
-            message['status'] = '💪 旅行者, 请先手动签到一次'
+            message['status'] = _('💪 旅行者, 请先手动签到一次')
 
             return self.message.format(**message)
 
@@ -163,7 +167,7 @@ class __BaseCheckin(object):
         message['total_sign_day'] = total_sign_day + 1
         message['status'] = response.get('message')
 
-        log.info('签到完毕')
+        log.info(_('签到完毕'))
         return self.message.format(**message)
 
     @property

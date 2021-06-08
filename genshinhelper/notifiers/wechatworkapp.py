@@ -1,6 +1,6 @@
 from .basenotifier import BaseNotifier as Base
 from ..config import config
-from ..utils import log, request
+from ..utils import log, request, _
 
 
 class WechatWorkApp(Base):
@@ -25,7 +25,7 @@ class WechatWorkApp(Base):
                 if retcode == 0:
                     return response['access_token']
                 else:
-                    log.error(f'Failed to get access_token:\n{response}')
+                    log.error(_('Failed to get access_token:\n{response}'))
                     return
         else:
             return

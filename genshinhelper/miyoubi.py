@@ -3,7 +3,7 @@ import time
 import uuid
 
 from .exceptions import GenshinHelperException
-from .utils import log, request, get_ds, extract_cookie
+from .utils import log, request, get_ds, extract_cookie, _
 
 
 TOKEN_URL = 'https://api-takumi.mihoyo.com/auth/api/getMultiTokenByLoginTicket?login_ticket={}&token_types=3&uid={}'
@@ -100,7 +100,9 @@ class MiyoubiCheckin(object):
             'title': post.get('post', {}).get('subject', 'untitled')
         } for post in post_list if post_list]
 
-        log.info(f'Succeeded in getting {len(posts)} posts')
+        log.info(_('Succeeded in getting {num_posts} posts').format(
+            num_posts=len(posts)
+            ))
         return posts
 
     def view_post(self, post: dict):
@@ -150,17 +152,17 @@ class MiyoubiCheckin(object):
             return f'{name} ({[i[0] for i in info].count(True)}/{len(info)})'
 
         log.info(f'🌕 {self.total_points}')
-        log.info('Preparing to get posts...')
+        log.info(_('Preparing to get posts...'))
         forum_id = 26
         posts = self.get_posts(forum_id)
 
-        log.info('Preparing to check-in...')
+        log.info(_('Preparing to check-in...'))
         sign = [self.sign(i) for i in range(1, 6) if not self.is_sign]
-        log.info('Preparing to view posts...')
+        log.info(_('Preparing to view posts...'))
         view = [self.view_post(i) for i in random.sample(posts[0:5], 3) if not self.is_view]
-        log.info('Preparing to upvote posts...')
+        log.info(_('Preparing to upvote posts...'))
         upvote = [self.upvote_post(i) for i in random.sample(posts[5:17], 10) if not self.is_upvote]
-        log.info('Preparing to share post...')
+        log.info(_('Preparing to share post...'))
         share = [self.share_post(i) for i in random.sample(posts[-3:-1], 1) if not self.is_share]
 
         message_box = [

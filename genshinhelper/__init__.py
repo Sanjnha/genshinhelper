@@ -5,6 +5,7 @@ from .genshin import YuanshenCheckin, GenshinCheckin
 from .miyoubi import MiyoubiCheckin
 from .utils import log, get_cookies
 from .weibo import SuperTopicCheckin, RedemptionCode
+from .utils import _
 
 banner = """
 ░█▀▀▀░█▀▀░█▀▀▄░█▀▀░█░░░░░▀░░█▀▀▄░█░░░░█▀▀░█░░▄▀▀▄░█▀▀░█▀▀▄
@@ -49,11 +50,13 @@ def __run_sign(name, cookies, func):
 
     account_count = len(cookies)
     account_str = 'account' if account_count == 1 else 'accounts'
-    log.info(f'You have {account_count} 「{name}」 {account_str} configured.')
+    log.info(_('You have {account_count} 「{name}」 {account_str} configured.').format(
+        account_count=account_count, name=name, account_str=account_str
+        ))
     global exit_code
     result_list = []
     for i, cookie in enumerate(cookies, start=1):
-        log.info(f'Preparing to perform tasks for account {i}...')
+        log.info(_('Preparing to perform tasks for account {i}...').format(i=i))
         try:
             result = func(cookie).run()
             success_count += 1
@@ -80,15 +83,15 @@ def __run_sign(name, cookies, func):
 def main():
     log.info(banner)
     log.info(f'🌀 genshinhelper v{__version__}')
-    log.info('Starting running...')
+    log.info(_('Starting...'))
     result = {i[0]: __run_sign(i[1][0], i[1][1], i[1][2]) for i in tasks.items()}
     total_success = sum([i[0] for i in result.values()])
     total_failure = sum([i[1] for i in result.values()])
     message = sum([i[2::] for i in result.values()], [])
-    tip = 'WARNING: Please configure environment variables or config.json file first!\n'
+    tip = _('WARNING: Please configure environment variables or config.json file first!\n')
     message_box = '\n'.join(message) if message else tip
 
-    log.info('RESULT:\n' + message_box)
+    log.info(_('RESULT:\n') + message_box)
     # The ``` is added to use markdown code block
     markdown_message = f'```\n{message_box}```'
     if message_box != tip:
@@ -99,7 +102,7 @@ def main():
             log.exception('TRACEBACK')
 
     if exit_code != 0:
-        log.error(f'Process finished with exit code {exit_code}')
+        log.error(_('Process finished with exit code {exit_code}').format(exit_code=exit_code))
         exit(exit_code)
-    log.info('End of process run')
+    log.info(_('End of process run'))
 
