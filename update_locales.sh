@@ -20,8 +20,8 @@ function update_or_copy() {
 }
 
 mkdir -p locales genshinhelper/locales
-xgettext -o locales/genshinhelper.pot *.py
-xgettext -o genshinhelper/locales/genshinhelper.pot genshinhelper/*.py genshinhelper/*/*.py
+xgettext -o locales/genshinhelper.pot *.py --from-code=UTF-8
+xgettext -o genshinhelper/locales/genshinhelper.pot genshinhelper/*.py genshinhelper/*/*.py --from-code=UTF-8
 
 update_or_copy "locales"
 update_or_copy "genshinhelper/locales"

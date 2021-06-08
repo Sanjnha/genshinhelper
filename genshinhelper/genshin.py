@@ -28,7 +28,7 @@ def _data_handler(func):
                 raise Exception(roles.get('message', 'Empty roles list'))
             if role_list:
                 result_list = []
-                log.info(_('当前账号绑定了 {num_roles)} 个角色').format(
+                log.info(_('当前账号绑定了 {num_roles} 个角色').format(
                     num_roles=len(role_list)
                     ))
                 for role in role_list:
