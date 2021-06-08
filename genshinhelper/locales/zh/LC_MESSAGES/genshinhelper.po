@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-08 20:20+1200\n"
+"POT-Creation-Date: 2021-06-08 22:35+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,36 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: genshinhelper/genshin.py:31
+#, python-brace-format
+msgid "当前账号绑定了 {num_roles} 个角色"
+msgstr ""
+
+#: genshinhelper/genshin.py:124
+#, python-brace-format
+msgid ""
+"旅行者 {month} 月札记\n"
+"    💠原石: {month_primogems}\n"
+"    🌕摩拉: {month_mora}"
+msgstr ""
+
+#: genshinhelper/genshin.py:137
+#, python-brace-format
+msgid "准备为旅行者 {hidden_uid} 签到..."
+msgstr ""
+
+#: genshinhelper/genshin.py:145
+msgid "👀 旅行者, 你已经签到过了哦"
+msgstr ""
+
+#: genshinhelper/genshin.py:153
+msgid "💪 旅行者, 请先手动签到一次"
+msgstr ""
+
+#: genshinhelper/genshin.py:170
+msgid "签到完毕"
+msgstr ""
 
 #: genshinhelper/__init__.py:53
 #, python-brace-format
@@ -49,35 +79,6 @@ msgstr ""
 msgid "End of process run"
 msgstr ""
 
-#: genshinhelper/genshin.py:31
-msgid "当前账号绑定了 {num_roles)} 个角色"
-msgstr ""
-
-#: genshinhelper/genshin.py:124
-#, python-brace-format
-msgid ""
-"旅行者 {month} 月札记\n"
-"    💠原石: {month_primogems}\n"
-"    🌕摩拉: {month_mora}"
-msgstr ""
-
-#: genshinhelper/genshin.py:137
-#, python-brace-format
-msgid "准备为旅行者 {hidden_uid} 签到..."
-msgstr ""
-
-#: genshinhelper/genshin.py:145
-msgid "👀 旅行者, 你已经签到过了哦"
-msgstr ""
-
-#: genshinhelper/genshin.py:153
-msgid "💪 旅行者, 请先手动签到一次"
-msgstr ""
-
-#: genshinhelper/genshin.py:170
-msgid "签到完毕"
-msgstr ""
-
 #: genshinhelper/miyoubi.py:103
 #, python-brace-format
 msgid "Succeeded in getting {num_posts} posts"
@@ -103,39 +104,35 @@ msgstr ""
 msgid "Preparing to share post..."
 msgstr ""
 
-#: genshinhelper/utils.py:49
+#: genshinhelper/utils.py:48
 #, python-brace-format
 msgid ""
 "Request failed: {url}\n"
 "{e}"
 msgstr ""
 
-#: genshinhelper/utils.py:53
+#: genshinhelper/utils.py:52
 #, python-brace-format
 msgid ""
 "Request failed ({count}/{total_requests}):\n"
 "{e}"
 msgstr ""
 
-#: genshinhelper/utils.py:58
+#: genshinhelper/utils.py:57
 #, python-brace-format
 msgid "Trying to reconnect in {seconds} seconds ({count}/{max_retries})..."
 msgstr ""
 
-#: genshinhelper/utils.py:66
-msgid "test"
-msgstr ""
-
-#: genshinhelper/utils.py:78
+#: genshinhelper/utils.py:75
 msgid "Failed to extract cookie: "
 msgstr ""
 
-#: genshinhelper/utils.py:79
+#: genshinhelper/utils.py:76
 #, python-brace-format
 msgid "The cookie does not contain the `{name}` field."
 msgstr ""
 
-#: genshinhelper/utils.py:118
+#: genshinhelper/utils.py:115
 #, python-brace-format
 msgid ""
 "\n"

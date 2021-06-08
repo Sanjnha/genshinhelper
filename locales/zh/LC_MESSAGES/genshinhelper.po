@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-08 20:20+1200\n"
+"POT-Creation-Date: 2021-06-08 22:35+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,28 +17,24 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: docker.py:21
+#: docker.py:19
 msgid "Docker container has stoped...."
 msgstr ""
 
-#: docker.py:28
+#: docker.py:26
 msgid "Running genshinhelper with docker"
 msgstr ""
 
-#: docker.py:38
+#: docker.py:36
 #, python-brace-format
 msgid "Current running datetime: {nt}"
 msgstr ""
 
-#: docker.py:39
+#: docker.py:37
 #, python-brace-format
 msgid "Next run datetime: {nextruntime}"
 msgstr ""
 
-#: docker.py:42
+#: docker.py:40
 msgid "Starting signing"
-msgstr ""
-
-#: docker.py:43
-msgid "python3 genshinhelper"
 msgstr ""
