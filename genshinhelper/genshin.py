@@ -116,6 +116,7 @@ class __BaseCheckin(object):
         hidden_uid = str(uid).replace(str(uid)[3:-3], '***', 1)
         data = self._sign_data.get('post_data', {})
         region = self._sign_data.get('region')
+        travel_notes = 'Olah! Odomu'
         if region in ['cn_gf01', 'cn_qd01']:
             ledger = journal.get_ledger(self._cookie, uid, region)
             travel_notes = '''旅行者 {month} 月札记
