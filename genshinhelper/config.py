@@ -28,6 +28,9 @@ class Config(object):
         # Language
         self.LANGUAGE = self.get_config('LANGUAGE')
 
+        # Maximum sleeping seconds
+        self.MAX_SLEEP_SECS = self.get_config('MAX_SLEEP_SECS')
+
         # Cookie configs
         # Cookie from https://bbs.mihoyo.com/ys/
         self.COOKIE_MIHOYOBBS = self.get_config('COOKIE_MIHOYOBBS')

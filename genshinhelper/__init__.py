@@ -1,3 +1,6 @@
+from time import sleep
+from random import randint
+
 from . import notifiers
 from ._version import __version__
 from .config import config
@@ -6,6 +9,7 @@ from .miyoubi import MiyoubiCheckin
 from .utils import log, get_cookies
 from .weibo import SuperTopicCheckin, RedemptionCode
 from .utils import _
+
 
 banner = """
 ░█▀▀▀░█▀▀░█▀▀▄░█▀▀░█░░░░░▀░░█▀▀▄░█░░░░█▀▀░█░░▄▀▀▄░█▀▀░█▀▀▄
@@ -83,7 +87,12 @@ def __run_sign(name, cookies, func):
 def main():
     log.info(banner)
     log.info(f'🌀 genshinhelper v{__version__}')
+
+    sleep_secs = randint(10, config.MAX_SLEEP_SECS)
+    log.info(_('Sleep for {} seconds...').format(sleep_secs))
+    sleep(sleep_secs)
     log.info(_('Starting...'))
+
     result = {i[0]: __run_sign(i[1][0], i[1][1], i[1][2]) for i in tasks.items()}
     total_success = sum([i[0] for i in result.values()])
     total_failure = sum([i[1] for i in result.values()])

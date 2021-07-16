@@ -1,5 +1,6 @@
 {
   "LANGUAGE": "en-us",
+  "MAX_SLEEP_SECS": 300,
   "COOKIE_MIHOYOBBS": "",
   "COOKIE_MIYOUBI": "",
   "COOKIE_HOYOLAB": "",
