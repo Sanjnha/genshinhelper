@@ -107,7 +107,7 @@ class Config(object):
         value = os.environ[name] if os.environ.get(name) else self.config_json.get(name, '')
 
         if name == 'LANGUAGE' and not value:
-            value = 'en-us'
+            value = 'en'
         elif name == 'MAX_SLEEP_SECS' and not value:
             value = 300
         elif name == 'RUN_ENV' and not value:

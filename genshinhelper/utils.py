@@ -7,9 +7,10 @@ import string
 import time
 import gettext
 import os
-import locale
-
 import requests
+
+from .config import config
+
 
 logging.basicConfig(
     level=logging.INFO,
@@ -20,7 +21,11 @@ log = logger = logging
 
 
 _localedir = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'locales')
-_translate = gettext.translation('genshinhelper', _localedir, fallback=True)
+_translate = gettext.translation(
+    'genshinhelper',
+    _localedir,
+    languages=[config.LANGUAGE],
+    fallback=True)
 _ = _translate.gettext
 
 def request(method: str,

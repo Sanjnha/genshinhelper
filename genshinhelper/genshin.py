@@ -15,6 +15,13 @@ from .exceptions import CookiesExpired
 from .utils import MESSAGE_TEMPLATE, log, request, get_ds, _
 
 
+_LANG_DICT = {
+    'zh': 'zh-cn',
+    'en': 'en-us'
+}
+_HOYOLAB_LANG = _LANG_DICT.get(config.LANGUAGE, '')
+
+
 def _data_handler(func):
     @wraps(func)
     def wrapper(self, *args, **kwargs):
@@ -212,6 +219,6 @@ class GenshinCheckin(__BaseCheckin):
     ACT_ID = 'e202102251931481'
     USER_AGENT = 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148'
     REFERER_URL = 'https://webstatic-sea.mihoyo.com/ys/event/signin-sea/index.html?act_id={}'.format(ACT_ID)
-    INFO_URL = 'https://hk4e-api-os.mihoyo.com/event/sol/info?lang={}&act_id={}'.format(config.LANGUAGE, ACT_ID)
-    REWARD_URL = 'https://hk4e-api-os.mihoyo.com/event/sol/home?lang={}&act_id={}'.format(config.LANGUAGE, ACT_ID)
-    SIGN_URL = 'https://hk4e-api-os.mihoyo.com/event/sol/sign?lang={}'.format(config.LANGUAGE)
+    INFO_URL = 'https://hk4e-api-os.mihoyo.com/event/sol/info?lang={}&act_id={}'.format(_HOYOLAB_LANG, ACT_ID)
+    REWARD_URL = 'https://hk4e-api-os.mihoyo.com/event/sol/home?lang={}&act_id={}'.format(_HOYOLAB_LANG, ACT_ID)
+    SIGN_URL = 'https://hk4e-api-os.mihoyo.com/event/sol/sign?lang={}'.format(_HOYOLAB_LANG)
