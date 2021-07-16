@@ -13,7 +13,7 @@ def load_requirements(filename):
 
 def create_mo_files():
     data_files = []
-    locale_dir = Path('genshinhelper/locales')
+    locale_dir = Path('genshinhelper/locale')
     po_dirs = [lang / 'LC_MESSAGES' for lang in locale_dir.iterdir() if lang.is_dir()]
     for dir in po_dirs:
         mo_files = []

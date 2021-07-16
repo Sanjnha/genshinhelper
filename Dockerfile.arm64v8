@@ -14,10 +14,10 @@ RUN adduser app -D              && \
 
 WORKDIR /app
 COPY docker.py ./
-COPY locales ./locales
+COPY locale ./locale
 COPY genshinhelper ./genshinhelper
-COPY update_locales.sh ./
-RUN sh update_locales.sh
+COPY update_i18n.sh ./
+RUN sh update_i18n.sh
 
 USER app
 CMD [ "python3", "./docker.py" ]

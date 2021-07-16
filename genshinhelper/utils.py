@@ -20,7 +20,7 @@ logging.basicConfig(
 log = logger = logging
 
 
-_localedir = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'locales')
+_localedir = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'locale')
 _translate = gettext.translation(
     'genshinhelper',
     _localedir,
