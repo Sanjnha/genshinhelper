@@ -31,6 +31,9 @@ class Config(object):
         # Maximum sleeping seconds
         self.MAX_SLEEP_SECS = self.get_config('MAX_SLEEP_SECS')
 
+        # Operating Environment
+        self.RUN_ENV = self.get_config('RUN_ENV')
+
         # Cookie configs
         # Cookie from https://bbs.mihoyo.com/ys/
         self.COOKIE_MIHOYOBBS = self.get_config('COOKIE_MIHOYOBBS')
@@ -102,6 +105,14 @@ class Config(object):
 
     def get_config(self, name: str):
         value = os.environ[name] if os.environ.get(name) else self.config_json.get(name, '')
+
+        if name == 'LANGUAGE' and not value:
+            value = 'en-us'
+        elif name == 'MAX_SLEEP_SECS' and not value:
+            value = 300
+        elif name == 'RUN_ENV' and not value:
+            value = 'prod'
+
         return value
 
 
