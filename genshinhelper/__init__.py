@@ -89,7 +89,7 @@ def main():
     log.info(f'🌀 genshinhelper v{__version__}')
 
     if config.RUN_ENV == 'prod':
-        sleep_secs = randint(10, config.MAX_SLEEP_SECS)
+        sleep_secs = randint(10, int(config.MAX_SLEEP_SECS))
         log.info(_('Sleep for {} seconds...').format(sleep_secs))
         sleep(sleep_secs)
 
