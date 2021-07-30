@@ -5,6 +5,7 @@ from . import notifiers
 from ._version import __version__
 from .config import config
 from .genshin import YuanshenCheckin, GenshinCheckin
+from .honkai3 import Bh3Checkin
 from .miyoubi import MiyoubiCheckin
 from .utils import log, get_cookies
 from .weibo import SuperTopicCheckin, RedemptionCode
@@ -22,6 +23,11 @@ tasks = {
         '原神签到福利',
         get_cookies(config.COOKIE_MIHOYOBBS),
         YuanshenCheckin
+    ],
+    'bh3': [
+        '崩坏3福利补给',
+        get_cookies(config.COOKIE_BH3),
+        Bh3Checkin
     ],
     'miyoubi': [
         '米游币签到姬',

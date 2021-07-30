@@ -37,6 +37,7 @@ class Config(object):
         # Cookie configs
         # Cookie from https://bbs.mihoyo.com/ys/
         self.COOKIE_MIHOYOBBS = self.get_config('COOKIE_MIHOYOBBS')
+        self.COOKIE_BH3 = self.get_config('COOKIE_BH3')
         self.COOKIE_MIYOUBI = self.get_config('COOKIE_MIYOUBI')
 
         # Cookie from https://webstatic-sea.mihoyo.com/ys/event/signin-sea/index.html?act_id=e202102251931481&lang=en-us
