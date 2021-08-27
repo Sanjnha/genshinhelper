@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-27 14:31+0800\n"
+"POT-Creation-Date: 2021-08-27 17:00+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -87,39 +87,39 @@ msgstr "Preparing to check-in captain {hidden_uid}..."
 msgid "👀 舰长, 你已经签到过了哦"
 msgstr "👀 Captain, you have already checked-in"
 
-#: genshinhelper/__init__.py:69
+#: genshinhelper/__init__.py:70
 #, python-brace-format
 msgid "You have {account_count} 「{name}」 {account_str} configured."
 msgstr ""
 
-#: genshinhelper/__init__.py:75
+#: genshinhelper/__init__.py:76
 #, python-brace-format
 msgid "Preparing to perform tasks for account {i}..."
 msgstr ""
 
-#: genshinhelper/__init__.py:105
+#: genshinhelper/__init__.py:106
 msgid "Sleep for {} seconds..."
 msgstr ""
 
-#: genshinhelper/__init__.py:108
+#: genshinhelper/__init__.py:109
 msgid "Starting..."
 msgstr ""
 
-#: genshinhelper/__init__.py:114
+#: genshinhelper/__init__.py:115
 msgid ""
 "WARNING: Please configure environment variables or config.json file first!\n"
 msgstr ""
 
-#: genshinhelper/__init__.py:117
+#: genshinhelper/__init__.py:118
 msgid "RESULT:\n"
 msgstr ""
 
-#: genshinhelper/__init__.py:128
+#: genshinhelper/__init__.py:129
 #, python-brace-format
 msgid "Process finished with exit code {exit_code}"
 msgstr ""
 
-#: genshinhelper/__init__.py:130
+#: genshinhelper/__init__.py:131
 msgid "End of process run"
 msgstr ""
 

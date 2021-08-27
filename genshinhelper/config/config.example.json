@@ -16,7 +16,6 @@
     "x-rpc-device_model": "",
     "x-rpc-app_id": "",
     "Referer": "https://app.mihoyo.com",
-    "Content-Length": "0",
     "Host": "api-cloudgame.mihoyo.com",
     "Connection": "Keep-Alive",
     "Accept-Encoding": "gzip",

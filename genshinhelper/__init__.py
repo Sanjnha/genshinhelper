@@ -61,7 +61,8 @@ tasks = {
 def __run_sign(name, cookies, func):
     success_count = 0
     failure_count = 0
-    if not cookies or not cookies[0].get('x-rpc-device_id'):
+    if not cookies or (
+        isinstance(cookies[0], dict) and 'xxxxxx' in cookies[0].get('x-rpc-combo_token')):
         return [success_count, failure_count]
 
     account_count = len(cookies)
