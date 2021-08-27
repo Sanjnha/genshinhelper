@@ -5,6 +5,7 @@ from . import notifiers
 from ._version import __version__
 from .config import config
 from .genshin import YuanshenCheckin, GenshinCheckin
+from .cloudgenshin import CloudGenshinCheckin
 from .honkai3 import Bh3Checkin
 from .miyoubi import MiyoubiCheckin
 from .utils import log, get_cookies
@@ -34,6 +35,11 @@ tasks = {
         get_cookies(config.COOKIE_MIYOUBI),
         MiyoubiCheckin
     ],
+    'cloudgenshin': [
+        '云原神签到姬',
+        get_cookies(config.CLOUD_GENSHIN),
+        CloudGenshinCheckin
+    ],
     'hoyolab': [
         'HoYoLAB Community',
         get_cookies(config.COOKIE_HOYOLAB),
@@ -55,7 +61,7 @@ tasks = {
 def __run_sign(name, cookies, func):
     success_count = 0
     failure_count = 0
-    if not cookies:
+    if not cookies or not cookies[0].get('x-rpc-device_id'):
         return [success_count, failure_count]
 
     account_count = len(cookies)

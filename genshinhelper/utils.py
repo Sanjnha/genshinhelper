@@ -8,6 +8,7 @@ import time
 import gettext
 import os
 import requests
+import json
 
 from .config import config
 
@@ -70,6 +71,10 @@ def request(method: str,
 def get_cookies(cookies: str = None):
     if '#' in cookies:
         return cookies.split('#')
+    elif isinstance(cookies, list):
+        return cookies
+    elif '{' in cookies:
+        return json.loads(cookies)
     else:
         return cookies.splitlines()
 

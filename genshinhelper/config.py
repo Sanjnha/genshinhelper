@@ -40,6 +40,8 @@ class Config(object):
         self.COOKIE_BH3 = self.get_config('COOKIE_BH3')
         self.COOKIE_MIYOUBI = self.get_config('COOKIE_MIYOUBI')
 
+        self.CLOUD_GENSHIN = self.get_config('CLOUD_GENSHIN')
+
         # Cookie from https://webstatic-sea.mihoyo.com/ys/event/signin-sea/index.html?act_id=e202102251931481&lang=en-us
         self.COOKIE_HOYOLAB = self.get_config('COOKIE_HOYOLAB')
 
