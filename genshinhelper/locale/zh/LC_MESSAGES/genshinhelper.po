@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-16 22:31+0800\n"
+"POT-Creation-Date: 2021-08-27 14:31+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,23 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: genshinhelper/genshin.py:38
+#: genshinhelper/cloudgenshin.py:21
+msgid ""
+"    签到结果: {}\n"
+"        免费时长: {} / {}\n"
+"        总计时长: {}\n"
+"        "
+msgstr ""
+
+#: genshinhelper/cloudgenshin.py:37
+msgid "{} 小时 {} 分钟"
+msgstr ""
+
+#: genshinhelper/cloudgenshin.py:38
+msgid "{} 小时"
+msgstr ""
+
+#: genshinhelper/genshin.py:38 genshinhelper/honkai3.py:140
 #, python-brace-format
 msgid "当前账号绑定了 {num_roles} 个角色"
 msgstr ""
@@ -43,43 +59,59 @@ msgstr ""
 msgid "💪 旅行者, 请先手动签到一次"
 msgstr ""
 
-#: genshinhelper/genshin.py:177
+#: genshinhelper/genshin.py:177 genshinhelper/honkai3.py:132
 msgid "签到完毕"
 msgstr ""
 
-#: genshinhelper/__init__.py:57
+#: genshinhelper/honkai3.py:89
+msgid ""
+"舰长的 {} 月手帐\n"
+"    💎水晶: {}\n"
+"    🔮星石: {}"
+msgstr ""
+
+#: genshinhelper/honkai3.py:103
+#, python-brace-format
+msgid "准备为舰长 {hidden_uid} 签到..."
+msgstr ""
+
+#: genshinhelper/honkai3.py:109
+msgid "👀 舰长, 你已经签到过了哦"
+msgstr ""
+
+#: genshinhelper/__init__.py:69
 #, python-brace-format
 msgid "You have {account_count} 「{name}」 {account_str} configured."
 msgstr ""
 
-#: genshinhelper/__init__.py:63
+#: genshinhelper/__init__.py:75
 #, python-brace-format
 msgid "Preparing to perform tasks for account {i}..."
 msgstr ""
 
-#: genshinhelper/__init__.py:93
+#: genshinhelper/__init__.py:105
 msgid "Sleep for {} seconds..."
 msgstr ""
 
-#: genshinhelper/__init__.py:96
+#: genshinhelper/__init__.py:108
 msgid "Starting..."
 msgstr ""
 
-#: genshinhelper/__init__.py:102
+#: genshinhelper/__init__.py:114
 msgid ""
 "WARNING: Please configure environment variables or config.json file first!\n"
 msgstr "警告：请先配置环境变量或配置文件！\n"
 
-#: genshinhelper/__init__.py:105
+#: genshinhelper/__init__.py:117
 msgid "RESULT:\n"
 msgstr ""
 
-#: genshinhelper/__init__.py:116
+#: genshinhelper/__init__.py:128
 #, python-brace-format
 msgid "Process finished with exit code {exit_code}"
 msgstr ""
 
-#: genshinhelper/__init__.py:118
+#: genshinhelper/__init__.py:130
 msgid "End of process run"
 msgstr ""
 
@@ -108,35 +140,35 @@ msgstr ""
 msgid "Preparing to share post..."
 msgstr ""
 
-#: genshinhelper/utils.py:53
+#: genshinhelper/utils.py:54
 #, python-brace-format
 msgid ""
 "Request failed: {url}\n"
 "{e}"
 msgstr ""
 
-#: genshinhelper/utils.py:57
+#: genshinhelper/utils.py:58
 #, python-brace-format
 msgid ""
 "Request failed ({count}/{total_requests}):\n"
 "{e}"
 msgstr ""
 
-#: genshinhelper/utils.py:62
+#: genshinhelper/utils.py:63
 #, python-brace-format
 msgid "Trying to reconnect in {seconds} seconds ({count}/{max_retries})..."
 msgstr ""
 
-#: genshinhelper/utils.py:80
+#: genshinhelper/utils.py:85
 msgid "Failed to extract cookie: "
 msgstr ""
 
-#: genshinhelper/utils.py:81
+#: genshinhelper/utils.py:86
 #, python-brace-format
 msgid "The cookie does not contain the `{name}` field."
 msgstr ""
 
-#: genshinhelper/utils.py:120
+#: genshinhelper/utils.py:125
 #, python-brace-format
 msgid ""
 "\n"
